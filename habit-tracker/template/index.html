@@ -9,8 +9,29 @@
   <title>Vite + React + TS</title>
 </head>
 <body>
+  <Header class="top">
+    <h1 class="title">
+      <span class="hello">Hello,</span>
+      <span class="username">User Name</span>
+    </h1>
+    <p>24, Dec 2021</p>
+  </Header>
+
+  <h2 class="habits-list"><span>Today's Habits</span></h2>
+  <section class="cards">
+    <article class="habit-card">
+      <h2>Example Habit</h2>
+      <p>Started Jan 2002</p>
+      <p>Current Streak: 4 days!</p>
+      <div class="buttons">
+        <button id="complete">Mark Complete</button>
+        <button id="details">View Details</button>
+      </div>
+    </article>
+  </section>
+
   <header>
-    <h1>Create New Habit</h1>
+    <h1>Add Habit</h1>
   </header>
   <form>
     
@@ -41,18 +62,5 @@
     <button type="clear">Clear Form</button>
     
   </form>
-  
-
-  <section class="cards">
-    <article class="habit-card">
-      <h2>Example Habit</h2>
-      <p>Started Jan 2002</p>
-      <p>Current Streak: 4 days!</p>
-      <div class="buttons">
-        <button id="complete">Mark Complete</button>
-        <button id="details">View Details</button>
-      </div>
-    </article>
-  </section>
 </body>
 </html>

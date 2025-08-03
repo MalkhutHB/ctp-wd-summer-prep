@@ -1,0 +1,39 @@
+body {
+    font-family:Arial, Helvetica, sans-serif;
+    color: #f9faf8;
+    background-color: #1f2937;
+    margin: 40px 240px;
+}
+
+.cards {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+}
+
+.habit-card {
+    border-style: solid;
+    border-radius: 20px;
+    width: 250px;
+    height: 270px;
+    margin-top: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+header.top {
+    height: 250px;
+    display: flex;
+    flex-direction: column;
+}
+
+.title {
+    width: 500px;
+}
+
+.habits-list {
+    display: flex;
+    justify-content: center;
+}
