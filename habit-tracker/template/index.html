@@ -18,7 +18,7 @@
     <input type="text" id="habit_name">
 
     <label>Category</label>
-    <select name="category">
+    <select name="category:" id="categories">
       <option value="health">Health</option>
       <option value="productivity">Productivity</option>
       <option value="learning">Learning</option>
@@ -37,10 +37,11 @@
     <input type="checkbox" name="reminders" id="reminders">
     <label for="reminders">Enable reminders</label>
 
-    <button type="submit">Create Habit</button>
+    <button type="button" class="create-button">Create Habit</button>
     <button type="clear">Clear Form</button>
     
   </form>
+  
 
   <section class="cards">
     <article class="habit-card">
