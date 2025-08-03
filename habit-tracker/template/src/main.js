@@ -21,11 +21,13 @@ function addHabit(habitName, categories, date) {
     const b2 = document.createElement("button");
     if (!date) date = new Date();
 
-    habitHeader.textContent = `${habitName.value}`;
+    habitHeader.textContent = habitName.value;
     started.textContent = `Started ${months[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
     streak.textContent = `Current Streak: 40 days!`;
     b1.textContent = `Mark Complete`;
     b2.textContent = `View Details`;
+    b1.id = "complete";
+    b2.id = "details";
 
     buttons.appendChild(b1);
     buttons.appendChild(b2);
@@ -36,14 +38,31 @@ function addHabit(habitName, categories, date) {
 
     cards.appendChild(card);
 
-    // store Habit (not local yet)
-    //const habitID = date.toISOString();
-    //habits[habitId] = { /*habit content*/};
-
 
     // category function later
     const selectedCategory = categories.options[categories.selectedIndex];
     console.log(selectedCategory.value);
+
+    // store Habit (not local yet)
+    const habitId = date.toISOString();
+    card.dataset.habitId = habitId;
+    habits[habitId] = { 
+        name: habitName.value,
+        category: selectedCategory.value,
+        startDate: date,
+        completionDates: [],
+    };
+
+    // markcomplete event listener
+    card.addEventListener("click", (e) => {
+    if (e.target.id == "complete") { 
+        completeHabit(card.dataset.habitId) ;
+    };
+});
+}
+
+function completeHabit(habitId) {
+    habits[habitId].completionDates.push(new Date());
 }
 
 // function to calc streak. Basically did alr. But, need local storage for this to even matter. 
@@ -51,3 +70,8 @@ function addHabit(habitName, categories, date) {
 
 // wait no, streaks would be from markcomplete. So need an array with dates associated to a habit. 
 // Prob can hash habits by exact start time
+
+// markcomplete:
+// Shouldn't have the opportunity to mark it complete until it reopens. I guess to make it simple, at 00:00 the day, and the next day/week
+// Need to add frequency paramater to addHabit for this. 
+// And again for testing, add date parameter to completeHabit
