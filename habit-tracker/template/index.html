@@ -10,29 +10,108 @@
 </head>
 <body>
   <Header class="top">
-    <h1 class="title">
-      <span class="hello">Hello,</span>
-      <span class="username">User Name</span>
-    </h1>
-    <p>24, Dec 2021</p>
+    <div>
+      <h1 class="title">
+        <span class="hello">Hello,</span>
+        <span class="username">User Name</span>
+      </h1>
+      <p>24, Dec 2021</p>
+    </div>
+    <div class="header-right">
+
+    </div>
   </Header>
 
   <h2 class="habits-list"><span>Today's Habits</span></h2>
   <section class="cards">
+
     <article class="habit-card">
-      <h2>Example Habit</h2>
-      <p>Started Jan 2002</p>
-      <p>Current Streak: 4 days!</p>
-      <div class="buttons">
-        <button id="complete">Mark Complete</button>
-        <button id="details">View Details</button>
+      <div class="habit-card-main">
+        <div class="habit-icon">
+        </div>
+        <div class="text">
+          <h2 class="habit-title">Sleep</h2>
+          <span>Completed</span>
+          <span>00:00 pm</span>
+          <!-- <div class="buttons">
+            <button id="complete">Mark Complete</button>
+            <button id="details">View Details</button>
+          </div> -->
+        </div>
+        <div class="completion-percent">
+          <div class = "inner-circle">
+            100%
+          </div>
+        </div>
       </div>
     </article>
+    <article class="habit-card">
+      <div class="habit-card-main">
+        <div class="habit-icon">
+
+        </div>
+        <div class="text">
+          <h2 class="habit-title">Sleep</h2>
+          <span>Completed</span>
+          <span>00:00 pm</span>
+          <!-- <div class="buttons">
+            <button id="complete">Mark Complete</button>
+            <button id="details">View Details</button>
+          </div> -->
+        </div>
+        <div class="completion-percent">
+          <div class = "inner-circle">
+            100%
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <article class="habit-card">
+      <div class="habit-card-main">
+        <div class="habit-icon">
+        </div>
+        <div class="text">
+          <h2 class="habit-title">Sleep</h2>
+          <span>Completed</span>
+          <span>00:00 pm</span>
+        </div>
+        <div class="completion-percent">
+          <div class = "inner-circle">
+            100%
+          </div>
+        </div>
+      </div>
+      <div class="habit-card-extender">
+        <span class="update-title">Update Habit</span>
+
+        <label for="habit_name_input">Habit Title</label>
+        <input type="text" id="habit_name_input" placeholder="Enter habit name">
+
+        <span>Repeat</span>
+        <div class="repeat-options">
+          <button class="repeat none">None</button>
+          <button class="repeat daily">Daily</button>
+          <button class="repeat weekly">Weekly</button>
+        </div>
+
+        <div class="time-section">
+          <label for="time">Time</label>
+          <span class="space"></span>
+          <input type="time" id="time" value="10:00">
+        </div>
+
+        <button class="save-habit">Save</button>
+      </div>
+    </article>
+
   </section>
 
-  <header>
-    <h1>Add Habit</h1>
-  </header>
+
+  <!-- new habit UI -->
+  
+  <button class="add-habit"><span class="plus">+</span>New Habit</button>
+  
   <form>
     
     <label for="habit_name">Habit Name:</label>
@@ -64,3 +143,23 @@
   </form>
 </body>
 </html>
+
+
+<!-- 
+current card design with js
+
+  <section class="cards">
+
+    <article class="habit-card">
+      <h2>Example Habit</h2>
+      <p>Started Jan 2002</p>
+      <p>Current Streak: 4 days!</p>
+      <div class="buttons">
+        <button id="complete">Mark Complete</button>
+        <button id="details">View Details</button>
+      </div>
+    </article>
+
+  </section>
+  
+-->

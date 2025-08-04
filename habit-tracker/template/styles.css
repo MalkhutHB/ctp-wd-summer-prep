@@ -1,39 +1,258 @@
 body {
     font-family:Arial, Helvetica, sans-serif;
-    color: #f9faf8;
-    background-color: #1f2937;
-    margin: 40px 240px;
+    background-color: #f9faf8;
+    color: #1f2937;
+    /* margin: 40px 240px 40px; */
+}
+
+body {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+* {
+    letter-spacing: 0.02em;
 }
 
 .cards {
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
     justify-content: center;
     gap: 20px;
 }
 
 .habit-card {
-    border-style: solid;
-    border-radius: 20px;
-    width: 250px;
-    height: 270px;
-    margin-top: 50px;
+    box-shadow: 0px 8px 21px -3px rgba(0,0,0,0.15);
+    box-sizing: border-box;
+    border-radius: 30px;
+    width: 750px;
+    margin-top: 0px;
+    padding: 0px 30px;
+    color: black;
+    background-color: #f9faf8;
+    margin-left: 20px;
+}
+.habit-card-main {
+    
+    height: 120px;
+    
     display: flex;
-    flex-direction: column;
+    align-items: center;
+
+    
+    
+    flex: 0 1 auto;
+}
+
+.habit-card-main button {
+    color: black;
+    background-color: #f9faf8;
+    border-style: solid;
+    border-radius: 5px;
+}
+
+.habit-title {
+    font-size: 20px;
+}
+
+.habit-icon {
+    height: 60px;
+    width: 60px;
+    /* border-style: solid; */
+    border-radius: 100%;
+    margin-right: 20px;
+    background-color: #dedddd;
+    background: linear-gradient(45deg, #A4A4A4 0%, #CBCBCB 100%, #757575 100%);
+    flex: 0 0 auto;
+}
+
+.completion-percent {
+    flex: 0 0 auto;
+    height: 70px;
+    width: 70px;
+    /* border-style: solid; */
+    border-radius: 100%;
+    /* border-width: 5px; */
+    /* border-color: rgb(38, 121, 255); */
+    background: linear-gradient(to bottom, #96BCFF 0%, #5E84FF 100%, #757575 100%);
+    margin-left: 230px;
+    display: flex;
+    justify-content: center;
     align-items: center;
 }
 
-header.top {
-    height: 250px;
+.inner-circle {
+    height: 55px;
+    width: 55px;
+    box-sizing: border-box;
+    border-radius: 100%;
+    background-color: white;
+    font-size: 16px;
+    font-weight: 700;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.habit-card-main .text {
+    width: 100px;
+    flex: 1 1 auto;
     display: flex;
     flex-direction: column;
+    justify-items: center;
+    gap: 8px;
+}
+
+.habit-card-main h2, .habit-card-main span {
+    margin: 0;
+}
+
+/* Habit Card Extender */
+
+.habit-card-extender {
+    background-color: #f9faf8;
+    height: 450px;
+    
+    display: flex;
+    flex-direction: column;
+
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.update-title {
+    font-size: 19px;
+    margin-bottom: 30px;
+}
+
+#habit_name_input {
+    border-style: none;
+    box-sizing: border-box;
+    margin: 10px 0px 30px;
+    height: 40px;
+    background-color: #a4c6dd39;
+    border-radius: 40px;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.repeat-options {
+    margin: 15px 0px 20px;
+    display: flex;
+    gap: 10px;
+}
+
+.repeat-options .repeat {
+    height: 53px;
+    width: 120px;
+    background-color: #a4c6dd39;
+    border-radius: 40px;
+    border-style: none;
+    font-size: 16px;
+    color: #767676;
+}
+
+.repeat:hover {
+    background-color: #f9faf8;
+    border-style: solid;
+    color: #269cc7;
+    border-color: #269cc7;
+}
+
+.time-section {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    width: 690px;
+    justify-content: space-between;
+}
+
+#time {
+    margin: 15px 0px;
+    height: 53px;
+    width: 200px;
+    padding-left: 10px;
+    background-color: #a4c6dd39;
+    border-radius: 40px;
+    border-style: none;
+    font-size: 16px;
+    color: #767676;
+    box-sizing: border-box;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+
+.save-habit {
+    margin: 20px;
+    width: 200px;
+    height: 55px;
+    background: linear-gradient(to bottom, #5BAAC7 0%, #289EEB 50%, #257B9E 100%);
+    border-radius: 15px;
+    border-style: none;
+    font-size: 20px;
+    color: #ffffff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 500;
+    box-shadow: 0px 2px 15px 3px rgba(91,170,199,0.55);
+    align-self: center;
+}
+
+.save-habit:hover {
+    transform: scale(1.02);
+}
+
+
+
+/* Sort Later */
+header.top {
+    height: 250px;
+    width: 700px;
+    display: flex;
 }
 
 .title {
-    width: 500px;
+    align-self: flex-start;
+}
+
+.header-right {
+    width: 5px;
+    flex: 1 1 auto;
 }
 
 .habits-list {
     display: flex;
     justify-content: center;
+}
+
+
+.add-habit {
+    margin: 20px;
+    width: 200px;
+    height: 55px;
+    background: linear-gradient(to bottom, #5BAAC7 0%, #289EEB 50%, #257B9E 100%);
+    border-radius: 15px;
+    border-style: none;
+    font-size: 20px;
+    color: #ffffff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 500;
+    box-shadow: 0px 2px 15px 3px rgba(91,170,199,0.55);
+}
+
+.add-habit:hover {
+    transform: scale(1.01);
+}
+
+.add-habit .plus {
+    font-size: 30px;
+    margin-right: 5px;
 }
