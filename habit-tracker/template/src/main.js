@@ -2,48 +2,63 @@ const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', '
 let habits = {};
 
 const cards = document.querySelector(".cards");
-const addButton = document.querySelector(".create-button");
-const habitName = document.querySelector("#habit_name");
-const categories = document.querySelector("#categories");
+const addButton = document.querySelector(".add-habit");
+//const habitName = document.querySelector("#habit_name");
+//const categories = document.querySelector("#categories");
+const cardTemplate = document.querySelector("#card-template");
+const extenderTemplate = document.querySelector("#extender-template");
+const hidden = document.querySelector("#detached-container");
+const extender = extenderTemplate.content.firstElementChild;
+const saveButton = extender.querySelector(".save-habit");
 
-addButton.addEventListener("click", () => addHabit(habitName, categories));
+const inputTitle = extender.querySelector("#habit_name_input");
+const inputTime = extender.querySelector("#time");
 
-function addHabit(habitName, categories, date) {
-    if (!habitName.value) throw new Error("User didn't enter name");
-    const card = document.createElement("article");
-    card.classList.add("habit-card") ;
+const cardsArray = document.querySelectorAll(".habit-card");
 
-    const habitHeader = document.createElement("h2");
-    const started = document.createElement("p");
-    const streak = document.createElement("p");
-    const buttons = document.createElement("div");
-    const b1 = document.createElement("button");
-    const b2 = document.createElement("button");
-    if (!date) date = new Date();
+for (const card of cardsArray) {
+    card.addEventListener("click", (e) => {
+        if (e.target != saveButton) card.appendChild(extender);
+    })
+}
 
-    habitHeader.textContent = habitName.value;
-    started.textContent = `Started ${months[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
-    streak.textContent = `Current Streak: 40 days!`;
-    b1.textContent = `Mark Complete`;
-    b2.textContent = `View Details`;
-    b1.id = "complete";
-    b2.id = "details";
+addButton.addEventListener("click", () => newHabit());
+// saveButton.addEventListener("click", () => {
+//      /***/
+// });
 
-    buttons.appendChild(b1);
-    buttons.appendChild(b2);
-    card.appendChild(habitHeader);
-    card.appendChild(started);
-    card.appendChild(streak);
-    card.appendChild(buttons);
+function newHabit() {
+    const clone = cardTemplate.content.cloneNode(true);
+    const article = clone.querySelector("article");
+    article.appendChild(extender);
 
-    cards.appendChild(card);
+    const habitTop = article.querySelector(".habit-card-main");
+    const completedStatus = article.querySelector(".completed");
+    const completionIcon = article.querySelector(".habit-icon"); // def rewrite that if statement lmaooo
+    article.addEventListener("click", (e) => {
+        if (e.target == saveButton) {
+            hidden.appendChild(extender);
+            changeHabit(article); 
+        } else if (e.target == completionIcon) {
+            if (completedStatus.textContent == "completed ☑️") {
+                completedStatus.textContent = "unfinished";
+                completionIcon.classList.remove("completed");
+            } else {
+                completedStatus.textContent = "completed ☑️"
+                completionIcon.classList.add("completed");
+            }
+        } else if (habitTop.contains(e.target) && article.querySelector(".habit-card-extender")) {
+            hidden.appendChild(extender);
+        } else if (!article.querySelector(".habit-card-extender")) { 
+            article.appendChild(extender);
+        } 
+    })
+    cards.appendChild(clone);
+    //storeHabit(article);
+}
 
-
-    // category function later
-    const selectedCategory = categories.options[categories.selectedIndex];
-    console.log(selectedCategory.value);
-
-    // store Habit (not local yet)
+function storeHabit(article) {
+    date = new Date();
     const habitId = date.toISOString();
     card.dataset.habitId = habitId;
     habits[habitId] = { 
@@ -52,13 +67,26 @@ function addHabit(habitName, categories, date) {
         startDate: date,
         completionDates: [],
     };
+}
 
-    // markcomplete event listener
-    card.addEventListener("click", (e) => {
-    if (e.target.id == "complete") { 
-        completeHabit(card.dataset.habitId) ;
-    };
-});
+function changeHabit(article, repeat) {
+    const titleElement = article.querySelector(".habit-title");
+    const timeElement = article.querySelector(".time");
+    titleElement.textContent = inputTitle.value || "New Habit";
+    timeElement.textContent = convert24to12(inputTime.value);
+}
+
+function convert24to12(time) {
+    let timeParts = time.split(":");
+    const date = new Date();
+    date.setHours(timeParts[0], timeParts[1]);
+
+    const time12hr = date.toLocaleTimeString([], {
+        hour: 'numeric',
+        minute: '2-digit',
+        hour12: true
+    });
+    return time12hr;
 }
 
 function completeHabit(habitId) {

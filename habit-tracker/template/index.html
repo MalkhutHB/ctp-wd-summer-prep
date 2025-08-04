@@ -25,86 +25,6 @@
   <h2 class="habits-list"><span>Today's Habits</span></h2>
   <section class="cards">
 
-    <article class="habit-card">
-      <div class="habit-card-main">
-        <div class="habit-icon">
-        </div>
-        <div class="text">
-          <h2 class="habit-title">Sleep</h2>
-          <span>Completed</span>
-          <span>00:00 pm</span>
-          <!-- <div class="buttons">
-            <button id="complete">Mark Complete</button>
-            <button id="details">View Details</button>
-          </div> -->
-        </div>
-        <div class="completion-percent">
-          <div class = "inner-circle">
-            100%
-          </div>
-        </div>
-      </div>
-    </article>
-    <article class="habit-card">
-      <div class="habit-card-main">
-        <div class="habit-icon">
-
-        </div>
-        <div class="text">
-          <h2 class="habit-title">Sleep</h2>
-          <span>Completed</span>
-          <span>00:00 pm</span>
-          <!-- <div class="buttons">
-            <button id="complete">Mark Complete</button>
-            <button id="details">View Details</button>
-          </div> -->
-        </div>
-        <div class="completion-percent">
-          <div class = "inner-circle">
-            100%
-          </div>
-        </div>
-      </div>
-    </article>
-
-    <article class="habit-card">
-      <div class="habit-card-main">
-        <div class="habit-icon">
-        </div>
-        <div class="text">
-          <h2 class="habit-title">Sleep</h2>
-          <span>Completed</span>
-          <span>00:00 pm</span>
-        </div>
-        <div class="completion-percent">
-          <div class = "inner-circle">
-            100%
-          </div>
-        </div>
-      </div>
-      <div class="habit-card-extender">
-        <span class="update-title">Update Habit</span>
-
-        <label for="habit_name_input">Habit Title</label>
-        <input type="text" id="habit_name_input" placeholder="Enter habit name">
-
-        <span>Repeat</span>
-        <div class="repeat-options">
-          <button class="repeat none">None</button>
-          <button class="repeat daily">Daily</button>
-          <button class="repeat weekly">Weekly</button>
-        </div>
-
-        <div class="time-section">
-          <label for="time">Time</label>
-          <span class="space"></span>
-          <input type="time" id="time" value="10:00">
-        </div>
-
-        <button class="save-habit">Save</button>
-      </div>
-    </article>
-
   </section>
 
 
@@ -112,35 +32,64 @@
   
   <button class="add-habit"><span class="plus">+</span>New Habit</button>
   
-  <form>
+
+
+  <!-- TEMPLATES -->
     
-    <label for="habit_name">Habit Name:</label>
-    <input type="text" id="habit_name">
+  <template id="card-template">
+    <article class="habit-card">
+      <div class="habit-card-main">
+        <div class="habit-icon">
+        </div>
+        <div class="text">
+          <h2 class="habit-title">New Habit</h2>
+          <span class="completed">unfinished</span>
+          <span class="time">10:00 AM</span>
+        </div>
+        <div class="completion-percent">
+          <div class = "inner-circle">
+            100%
+          </div>
+        </div>
+      </div>
+    </article>
+  </template>
 
-    <label>Category</label>
-    <select name="category:" id="categories">
-      <option value="health">Health</option>
-      <option value="productivity">Productivity</option>
-      <option value="learning">Learning</option>
-    </select>
-    
+  <template id="extender-template">
+    <div class="habit-card-extender">
+      <span class="update-title">Update Habit</span>
 
-    <fieldset>
-      <legend>Frequency:</legend>
-      <label for="daily">Daily</label>
-      <input type="radio" name="frequency" id="daily" value="Daily" checked>
-      
-      <label for="weekly">Weekly</label>
-      <input type="radio" name="frequency" id="weekly" value="Weekly">
-    </fieldset>
+      <label for="habit_name_input">Habit Title</label>
+      <input type="text" id="habit_name_input" placeholder="Enter habit name">
 
-    <input type="checkbox" name="reminders" id="reminders">
-    <label for="reminders">Enable reminders</label>
+      <span>Repeat</span>
+      <div class="repeat-options">
+        <button class="repeat none">None</button>
+        <button class="repeat daily">Daily</button>
+        <button class="repeat weekly">Weekly</button>
+      </div>
 
-    <button type="button" class="create-button">Create Habit</button>
-    <button type="clear">Clear Form</button>
-    
-  </form>
+      <div class="time-section">
+        <label for="time">Time</label>
+        <input type="time" id="time" value="10:00">
+      </div>
+
+      <button class="save-habit">Save</button>
+    </div>
+  </template>
+
+  <div id="detached-container" style="display:none;">
+
+  </div>
+  <!-- TEMPLATES -->
+
+
+
+
+
+
+
+  
 </body>
 </html>
 

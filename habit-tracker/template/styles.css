@@ -33,7 +33,6 @@ body {
     padding: 0px 30px;
     color: black;
     background-color: #f9faf8;
-    margin-left: 20px;
 }
 .habit-card-main {
     
@@ -67,6 +66,18 @@ body {
     background-color: #dedddd;
     background: linear-gradient(45deg, #A4A4A4 0%, #CBCBCB 100%, #757575 100%);
     flex: 0 0 auto;
+}
+
+.habit-icon.green:hover {
+    background: linear-gradient(45deg, #65B516 0%, #AFF200 100%, #689E42 100%);
+}
+
+.habit-icon:hover {
+    background: linear-gradient(45deg, #5BAAC7 0%, #6ED2FF 100%, #ffffff 100%);
+}
+
+.habit-icon.completed {
+    background: linear-gradient(45deg, #5BAAC7 0%, #6ED2FF 100%, #ffffff 100%);
 }
 
 .completion-percent {
