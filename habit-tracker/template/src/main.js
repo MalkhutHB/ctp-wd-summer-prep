@@ -10,13 +10,12 @@ let habits = habitsParsed;
 
 const cards = document.querySelector(".cards");
 const addButton = document.querySelector(".add-habit");
-//const habitName = document.querySelector("#habit_name");
-//const categories = document.querySelector("#categories");
 const cardTemplate = document.querySelector("#card-template");
 const extenderTemplate = document.querySelector("#extender-template");
 const hidden = document.querySelector("#detached-container");
 const extender = extenderTemplate.content.firstElementChild;
 const saveButton = extender.querySelector(".save-habit");
+const deleteButton = extender.querySelector(".delete-habit");
 
 const inputTitle = extender.querySelector("#habit_name_input");
 const inputTime = extender.querySelector("#time");
@@ -46,6 +45,11 @@ function newHabit() {
         if (e.target == saveButton) {
             hidden.appendChild(extender);
             changeHabit(article); 
+        } else if (e.target == deleteButton) {
+            hidden.appendChild(extender);
+            article.remove();
+            delete habits[habitId]; 
+            localStorage.setItem("habits", JSON.stringify(habits));
         } else if (e.target == completionIcon) {
             if (completedStatus.textContent == "completed ☑️") {
                 completedStatus.textContent = "unfinished";
@@ -89,6 +93,11 @@ function renderHabits() {
             if (e.target == saveButton) {
                 hidden.appendChild(extender);
                 changeHabit(article); 
+            } else if (e.target == deleteButton) {
+                hidden.appendChild(extender);
+                article.remove();
+                delete habits[habitId]; // remove or sumn idk
+                localStorage.setItem("habits", JSON.stringify(habits));
             } else if (e.target == completionIcon) {
                 if (completedStatus.textContent == "completed ☑️") {
                     completedStatus.textContent = "unfinished";

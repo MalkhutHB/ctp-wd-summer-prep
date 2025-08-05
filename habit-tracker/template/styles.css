@@ -58,6 +58,7 @@ body {
 }
 
 .habit-icon {
+    box-sizing: border-box;
     height: 60px;
     width: 60px;
     /* border-style: solid; */
@@ -73,7 +74,8 @@ body {
 }
 
 .habit-icon:hover {
-    background: linear-gradient(45deg, #5BAAC7 0%, #6ED2FF 100%, #ffffff 100%);
+    border-style: solid;
+    border-color:  #5BAAC7;
 }
 
 .habit-icon.completed {
@@ -198,6 +200,11 @@ body {
     display: flex;
 }
 
+.buttons {
+    display: flex;
+    justify-content: center;
+}
+
 .save-habit {
     margin: 20px;
     width: 200px;
@@ -219,6 +226,26 @@ body {
     transform: scale(1.02);
 }
 
+.delete-habit {
+    margin: 20px;
+    width: 200px;
+    height: 55px;
+    background: linear-gradient(to bottom, #FA3232 0%, #EB352D 50%, #CF201D 100%);
+    border-radius: 15px;
+    border-style: none;
+    font-size: 20px;
+    color: #ffffff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 500;
+    box-shadow: 0px 2px 15px 3px #FA32328c;
+    align-self: center;
+}
+
+.delete-habit:hover {
+    transform: scale(1.02);
+}
 
 
 /* Sort Later */
