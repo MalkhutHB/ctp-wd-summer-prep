@@ -1,5 +1,12 @@
 const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-let habits = {};
+
+const habitsJson = localStorage.getItem("habits");
+let habitsParsed = JSON.parse(habitsJson || "{}", (key, value) => {
+    if (key == "startDate") return new Date(value);
+    if (key == "completionDates") return value.map(date => new Date(date));
+    return value;
+})
+let habits = habitsParsed;
 
 const cards = document.querySelector(".cards");
 const addButton = document.querySelector(".add-habit");
@@ -23,18 +30,18 @@ for (const card of cardsArray) {
 }
 
 addButton.addEventListener("click", () => newHabit());
-// saveButton.addEventListener("click", () => {
-//      /***/
-// });
+renderHabits();
 
 function newHabit() {
     const clone = cardTemplate.content.cloneNode(true);
     const article = clone.querySelector("article");
     article.appendChild(extender);
+    storeHabit(article);
 
     const habitTop = article.querySelector(".habit-card-main");
-    const completedStatus = article.querySelector(".completed");
-    const completionIcon = article.querySelector(".habit-icon"); // def rewrite that if statement lmaooo
+    const completedStatus = article.querySelector(".completed"); 
+    const completionIcon = article.querySelector(".habit-icon"); 
+    const habitId = article.dataset.habitId;
     article.addEventListener("click", (e) => {
         if (e.target == saveButton) {
             hidden.appendChild(extender);
@@ -43,9 +50,12 @@ function newHabit() {
             if (completedStatus.textContent == "completed ☑️") {
                 completedStatus.textContent = "unfinished";
                 completionIcon.classList.remove("completed");
+                habits[habitId].completionDates.splice(-1);
             } else {
                 completedStatus.textContent = "completed ☑️"
                 completionIcon.classList.add("completed");
+                habits[habitId].completionDates.push(new Date());
+                localStorage.setItem("habits", JSON.stringify(habits));
             }
         } else if (habitTop.contains(e.target) && article.querySelector(".habit-card-extender")) {
             hidden.appendChild(extender);
@@ -54,19 +64,72 @@ function newHabit() {
         } 
     })
     cards.appendChild(clone);
-    //storeHabit(article);
 }
+
+function renderHabits() {
+    for (const habitId in habits) {
+        const clone = cardTemplate.content.cloneNode(true);
+        const article = clone.querySelector("article");
+        const habitTop = article.querySelector(".habit-card-main");
+
+        const today = new Date();
+        const completedStatus = article.querySelector(".completed"); // make if completiondate today
+        const completionIcon = article.querySelector(".habit-icon"); 
+        const oneDayInMs = 1000 * 60 * 60 * 24;
+        //const habitId = article.dataset.habitId;
+        //const habitId = key;
+
+        article.dataset.habitId = habitId;  // isSameDay(today, habits[habitId].completionDates.at(-1)) bugged though
+        if (habits[habitId].completionDates && today - habits[habitId].completionDates.at(-1) < oneDayInMs) {
+            completedStatus.textContent = "completed ☑️";
+            completionIcon.classList.add("completed");
+        }   
+
+        article.addEventListener("click", (e) => { 
+            if (e.target == saveButton) {
+                hidden.appendChild(extender);
+                changeHabit(article); 
+            } else if (e.target == completionIcon) {
+                if (completedStatus.textContent == "completed ☑️") {
+                    completedStatus.textContent = "unfinished";
+                    completionIcon.classList.remove("completed");
+                    habits[habitId].completionDates.splice(-1);
+                    localStorage.setItem("habits", JSON.stringify(habits));
+                } else {
+                    completedStatus.textContent = "completed ☑️"
+                    completionIcon.classList.add("completed");
+                    habits[habitId].completionDates.push(new Date());
+                    localStorage.setItem("habits", JSON.stringify(habits));
+                }
+            } else if (habitTop.contains(e.target) && article.querySelector(".habit-card-extender")) {
+                hidden.appendChild(extender);
+            } else if (!article.querySelector(".habit-card-extender")) { 
+                article.appendChild(extender);
+            } 
+        })
+        
+        // from changehabit function
+        const titleElement = article.querySelector(".habit-title");
+        const timeElement = article.querySelector(".time");
+        titleElement.textContent = habits[habitId].name;
+        timeElement.textContent = convert24to12(habits[habitId].reminderTime || "10:00");
+
+        cards.appendChild(clone);
+    }
+}
+
 
 function storeHabit(article) {
     date = new Date();
     const habitId = date.toISOString();
-    card.dataset.habitId = habitId;
+    article.dataset.habitId = habitId;
     habits[habitId] = { 
-        name: habitName.value,
-        category: selectedCategory.value,
+        name: "New Habit",
         startDate: date,
         completionDates: [],
+        reminderTime: "10:00",
     };
+    localStorage.setItem("habits", JSON.stringify(habits));
 }
 
 function changeHabit(article, repeat) {
@@ -74,6 +137,11 @@ function changeHabit(article, repeat) {
     const timeElement = article.querySelector(".time");
     titleElement.textContent = inputTitle.value || "New Habit";
     timeElement.textContent = convert24to12(inputTime.value);
+
+    const habitId = article.dataset.habitId;
+    habits[habitId].name = inputTitle.value || "New Habit";
+    habits[habitId].reminderTime = inputTime.value;
+    localStorage.setItem("habits", JSON.stringify(habits));
 }
 
 function convert24to12(time) {
@@ -89,8 +157,15 @@ function convert24to12(time) {
     return time12hr;
 }
 
-function completeHabit(habitId) {
+function completeHabit(habitId) { // unused I think
     habits[habitId].completionDates.push(new Date());
+    localStorage.setItem("habits", JSON.stringify(habits));
+}
+
+function isSameDay(date1, date2) {
+    date1.setHours(0, 0, 0, 0);
+    date2.setHours(0, 0, 0, 0);
+    return date1.getTime() === date2.getTime();
 }
 
 // function to calc streak. Basically did alr. But, need local storage for this to even matter. 
