@@ -63,6 +63,22 @@ function habitInteract(e, article, habitId) {
     } 
 }
 
+function habitInteractDouble(e, article, habitId) {
+    const habitTop = article.querySelector(".habit-card-main");
+    const completionIcon = article.querySelector(".habit-icon"); 
+    if (e.target != saveButton &&
+        e.target != deleteButton &&
+        e.target != completionIcon &&
+        !(habitTop.contains(e.target) && article.querySelector(".habit-card-extender")) &&
+        !article.querySelector(".habit-card-extender")
+    ) {
+        hidden.appendChild(extender);
+        article.remove();
+        delete habits[habitId]; 
+        localStorage.setItem("habits", JSON.stringify(habits));
+    }
+}
+
 function newHabit() {
     const clone = cardTemplate.content.cloneNode(true);
     const article = clone.querySelector("article");
@@ -70,6 +86,7 @@ function newHabit() {
     const habitId = storeHabit(article);
 
     article.addEventListener("click", (e) => habitInteract(e, article, habitId));
+    article.addEventListener("dblclick", (e) => habitInteractDouble(e, article, habitId)); /*temporary*/
     cards.appendChild(clone);
 }
 
@@ -79,7 +96,7 @@ function renderHabits() {
         const article = clone.querySelector("article");
         
         const habitTop = article.querySelector(".habit-card-main");
-        const completedStatus = article.querySelector(".status"); // make if completiondate today
+        const completedStatus = article.querySelector(".status"); 
         const completionIcon = article.querySelector(".habit-icon"); 
         
         const oneDayInMs = 1000 * 60 * 60 * 24;
@@ -92,6 +109,7 @@ function renderHabits() {
         }   
 
         article.addEventListener("click", (e) => habitInteract(e, article, habitId))
+        article.addEventListener("dblclick", (e) => habitInteractDouble(e, article, habitId)); /*temporary*/
         
         // from changehabit function
         const titleElement = article.querySelector(".habit-title");
@@ -143,7 +161,7 @@ function convert24to12(time) {
     return time12hr;
 }
 
-function completeHabit(habitId) { // unused I think
+function completeHabit(habitId) { // unused
     habits[habitId].completionDates.push(new Date());
     localStorage.setItem("habits", JSON.stringify(habits));
 }
