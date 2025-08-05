@@ -31,42 +31,45 @@ for (const card of cardsArray) {
 addButton.addEventListener("click", () => newHabit());
 renderHabits();
 
+function habitInteract(e, article, habitId) {
+    const habitTop = article.querySelector(".habit-card-main");
+    const completedStatus = article.querySelector(".status"); 
+    const completionIcon = article.querySelector(".habit-icon"); 
+
+    if (e.target == saveButton) {
+        hidden.appendChild(extender);
+        changeHabit(article); 
+    } else if (e.target == deleteButton) {
+        hidden.appendChild(extender);
+        article.remove();
+        delete habits[habitId]; 
+        localStorage.setItem("habits", JSON.stringify(habits));
+    } else if (e.target == completionIcon) {
+        if (completedStatus.textContent == "completed ☑️") {
+            completedStatus.textContent = "unfinished";
+            completionIcon.classList.remove("completed");
+            habits[habitId].completionDates.splice(-1);
+            localStorage.setItem("habits", JSON.stringify(habits));
+        } else {
+            completedStatus.textContent = "completed ☑️"
+            completionIcon.classList.add("completed");
+            habits[habitId].completionDates.push(new Date());
+            localStorage.setItem("habits", JSON.stringify(habits));
+        }
+    } else if (habitTop.contains(e.target) && article.querySelector(".habit-card-extender")) {
+        hidden.appendChild(extender);
+    } else if (!article.querySelector(".habit-card-extender")) { 
+        article.appendChild(extender);
+    } 
+}
+
 function newHabit() {
     const clone = cardTemplate.content.cloneNode(true);
     const article = clone.querySelector("article");
     article.appendChild(extender);
-    storeHabit(article);
+    const habitId = storeHabit(article);
 
-    const habitTop = article.querySelector(".habit-card-main");
-    const completedStatus = article.querySelector(".completed"); 
-    const completionIcon = article.querySelector(".habit-icon"); 
-    const habitId = article.dataset.habitId;
-    article.addEventListener("click", (e) => {
-        if (e.target == saveButton) {
-            hidden.appendChild(extender);
-            changeHabit(article); 
-        } else if (e.target == deleteButton) {
-            hidden.appendChild(extender);
-            article.remove();
-            delete habits[habitId]; 
-            localStorage.setItem("habits", JSON.stringify(habits));
-        } else if (e.target == completionIcon) {
-            if (completedStatus.textContent == "completed ☑️") {
-                completedStatus.textContent = "unfinished";
-                completionIcon.classList.remove("completed");
-                habits[habitId].completionDates.splice(-1);
-            } else {
-                completedStatus.textContent = "completed ☑️"
-                completionIcon.classList.add("completed");
-                habits[habitId].completionDates.push(new Date());
-                localStorage.setItem("habits", JSON.stringify(habits));
-            }
-        } else if (habitTop.contains(e.target) && article.querySelector(".habit-card-extender")) {
-            hidden.appendChild(extender);
-        } else if (!article.querySelector(".habit-card-extender")) { 
-            article.appendChild(extender);
-        } 
-    })
+    article.addEventListener("click", (e) => habitInteract(e, article, habitId));
     cards.appendChild(clone);
 }
 
@@ -74,14 +77,13 @@ function renderHabits() {
     for (const habitId in habits) {
         const clone = cardTemplate.content.cloneNode(true);
         const article = clone.querySelector("article");
+        
         const habitTop = article.querySelector(".habit-card-main");
-
-        const today = new Date();
-        const completedStatus = article.querySelector(".completed"); // make if completiondate today
+        const completedStatus = article.querySelector(".status"); // make if completiondate today
         const completionIcon = article.querySelector(".habit-icon"); 
+        
         const oneDayInMs = 1000 * 60 * 60 * 24;
-        //const habitId = article.dataset.habitId;
-        //const habitId = key;
+        const today = new Date();
 
         article.dataset.habitId = habitId;  // isSameDay(today, habits[habitId].completionDates.at(-1)) bugged though
         if (habits[habitId].completionDates && today - habits[habitId].completionDates.at(-1) < oneDayInMs) {
@@ -89,33 +91,7 @@ function renderHabits() {
             completionIcon.classList.add("completed");
         }   
 
-        article.addEventListener("click", (e) => { 
-            if (e.target == saveButton) {
-                hidden.appendChild(extender);
-                changeHabit(article); 
-            } else if (e.target == deleteButton) {
-                hidden.appendChild(extender);
-                article.remove();
-                delete habits[habitId]; // remove or sumn idk
-                localStorage.setItem("habits", JSON.stringify(habits));
-            } else if (e.target == completionIcon) {
-                if (completedStatus.textContent == "completed ☑️") {
-                    completedStatus.textContent = "unfinished";
-                    completionIcon.classList.remove("completed");
-                    habits[habitId].completionDates.splice(-1);
-                    localStorage.setItem("habits", JSON.stringify(habits));
-                } else {
-                    completedStatus.textContent = "completed ☑️"
-                    completionIcon.classList.add("completed");
-                    habits[habitId].completionDates.push(new Date());
-                    localStorage.setItem("habits", JSON.stringify(habits));
-                }
-            } else if (habitTop.contains(e.target) && article.querySelector(".habit-card-extender")) {
-                hidden.appendChild(extender);
-            } else if (!article.querySelector(".habit-card-extender")) { 
-                article.appendChild(extender);
-            } 
-        })
+        article.addEventListener("click", (e) => habitInteract(e, article, habitId))
         
         // from changehabit function
         const titleElement = article.querySelector(".habit-title");
@@ -139,6 +115,7 @@ function storeHabit(article) {
         reminderTime: "10:00",
     };
     localStorage.setItem("habits", JSON.stringify(habits));
+    return habitId;
 }
 
 function changeHabit(article, repeat) {
