@@ -1,7 +1,7 @@
 const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
 const habitsJson = localStorage.getItem("habits");
-let habitsParsed = JSON.parse(habitsJson || "{}", (key, value) => {
+let habitsParsed = JSON.parse(habitsJson || "{}", (key, value) => { // startDate unusued but will be useful for completion statistics later
     if (key == "startDate") return new Date(value);
     if (key == "completionDates") return value.map(date => new Date(date));
     return value;
@@ -30,6 +30,16 @@ for (const card of cardsArray) {
 
 addButton.addEventListener("click", () => newHabit());
 renderHabits();
+
+function extenderFill(habitId) {
+    inputTitle.value = habits[habitId].name;
+    inputTime.value = habits[habitId].reminderTime;
+}
+
+function extenderClear() {
+    inputTitle.value = "";
+    inputTime.value = "10:00";
+}
 
 function habitInteract(e, article, habitId) {
     const habitTop = article.querySelector(".habit-card-main");
@@ -60,6 +70,7 @@ function habitInteract(e, article, habitId) {
         hidden.appendChild(extender);
     } else if (!article.querySelector(".habit-card-extender")) { 
         article.appendChild(extender);
+        extenderFill(habitId);
     } 
 }
 
@@ -82,6 +93,7 @@ function habitInteractDouble(e, article, habitId) {
 function newHabit() {
     const clone = cardTemplate.content.cloneNode(true);
     const article = clone.querySelector("article");
+    extenderClear();
     article.appendChild(extender);
     const habitId = storeHabit(article);
 
