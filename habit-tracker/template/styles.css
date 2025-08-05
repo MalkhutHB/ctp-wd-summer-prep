@@ -239,7 +239,7 @@ body {
     justify-content: center;
     align-items: center;
     font-weight: 500;
-    box-shadow: 0px 2px 15px 3px #FA32328c;
+    box-shadow: 0px 2px 15px 3px rgba(250, 50, 50, 0.373);
     align-self: center;
 }
 
