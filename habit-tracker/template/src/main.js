@@ -36,13 +36,15 @@ sectionButtons.addEventListener("click", (e) => {
     if (!e.target.classList.contains("selected") && e.target == mainSection) {
         mainSection.classList.add("selected");
         completedSection.classList.remove("selected");
+        renderHabits("main");
     }
     else if (!e.target.classList.contains("selected") && e.target == completedSection) {
         completedSection.classList.add("selected");
         mainSection.classList.remove("selected");
+        renderHabits("completed");
     }
 });
-renderHabits();
+renderHabits("main");
 
 function extenderFill(habitId) {
     inputTitle.value = habits[habitId].name;
@@ -58,6 +60,7 @@ function habitInteract(e, article, habitId) {
     const habitTop = article.querySelector(".habit-card-main");
     const completedStatus = article.querySelector(".status"); 
     const completionIcon = article.querySelector(".habit-icon"); 
+    const percentInner = article.querySelector(".inner-circle");
 
     if (e.target == saveButton) {
         hidden.appendChild(extender);
@@ -79,6 +82,7 @@ function habitInteract(e, article, habitId) {
             habits[habitId].completionDates.push(new Date());
             localStorage.setItem("habits", JSON.stringify(habits));
         }
+    } else if (e.target == percentInner) { //console.log("inner pressed");
     } else if (habitTop.contains(e.target) && article.querySelector(".habit-card-extender")) {
         hidden.appendChild(extender);
     } else if (!article.querySelector(".habit-card-extender")) { 
@@ -90,12 +94,8 @@ function habitInteract(e, article, habitId) {
 function habitInteractDouble(e, article, habitId) {
     const habitTop = article.querySelector(".habit-card-main");
     const completionIcon = article.querySelector(".habit-icon"); 
-    if (e.target != saveButton &&
-        e.target != deleteButton &&
-        e.target != completionIcon &&
-        !(habitTop.contains(e.target) && article.querySelector(".habit-card-extender")) &&
-        !article.querySelector(".habit-card-extender")
-    ) {
+    const percentInner = article.querySelector(".inner-circle");
+    if (e.target == percentInner) {
         hidden.appendChild(extender);
         article.remove();
         delete habits[habitId]; 
@@ -104,6 +104,9 @@ function habitInteractDouble(e, article, habitId) {
 }
 
 function newHabit() {
+    if (completedSection.classList.contains("selected")) {
+        mainSection.dispatchEvent(new CustomEvent("click", {bubbles:true}));
+    }
     const clone = cardTemplate.content.cloneNode(true);
     const article = clone.querySelector("article");
     extenderClear();
@@ -111,11 +114,13 @@ function newHabit() {
     const habitId = storeHabit(article);
 
     article.addEventListener("click", (e) => habitInteract(e, article, habitId));
-    article.addEventListener("dblclick", (e) => habitInteractDouble(e, article, habitId)); /*temporary*/
+    article.addEventListener("dblclick", (e) => habitInteractDouble(e, article, habitId)); /*temporary? can have warning popup that can be disabled permanently*/
     cards.appendChild(clone);
 }
 
-function renderHabits() {
+function renderHabits(section) {
+    renderClear();
+    let main = (section == "main") ? true : false;
     for (const habitId in habits) {
         const clone = cardTemplate.content.cloneNode(true);
         const article = clone.querySelector("article");
@@ -128,13 +133,16 @@ function renderHabits() {
         const today = new Date();
 
         article.dataset.habitId = habitId;  // isSameDay(today, habits[habitId].completionDates.at(-1)) bugged though
-        if (habits[habitId].completionDates && isSameDay(today, habits[habitId].completionDates.at(-1))) {
+        if (habits[habitId].completionDates && isSameTimeframe("day", today, habits[habitId].completionDates.at(-1))) {
             completedStatus.textContent = "completed ☑️";
             completionIcon.classList.add("completed");
+            if (main) continue;
+        } else {
+            if (!main) continue;
         }   
 
         article.addEventListener("click", (e) => habitInteract(e, article, habitId))
-        article.addEventListener("dblclick", (e) => habitInteractDouble(e, article, habitId)); /*temporary*/
+        article.addEventListener("dblclick", (e) => habitInteractDouble(e, article, habitId)); /*temporary?*/
         
         // from changehabit function
         const titleElement = article.querySelector(".habit-title");
@@ -144,6 +152,10 @@ function renderHabits() {
 
         cards.appendChild(clone);
     }
+}
+
+function renderClear() {
+    cards.replaceChildren();
 }
 
 
@@ -191,11 +203,16 @@ function completeHabit(habitId) { // unused
     localStorage.setItem("habits", JSON.stringify(habits));
 }
 
-function isSameDay(date1, date2) {
+function isSameTimeframe(timeframe, date1, date2, whichDays) {
     if (!date2) return false;
-    date1.setHours(0, 0, 0, 0);
-    date2.setHours(0, 0, 0, 0);
-    return date1.getTime() === date2.getTime();
+    if (timeframe.toLowerCase() === "day") {
+        date1.setHours(0, 0, 0, 0);
+        date2.setHours(0, 0, 0, 0);
+        return date1.getTime() === date2.getTime();
+    }
+    if (timeframe.toLowerCase() === "week") {
+
+    }
 }
 
 // function to calc streak. Basically did alr. But, need local storage for this to even matter. 
@@ -210,4 +227,4 @@ function isSameDay(date1, date2) {
 // And again for testing, add date parameter to completeHabit
 
 
-//today - habits[habitId].completionDates.at(-1) < oneDayInMs)
+// today - habits[habitId].completionDates.at(-1) < oneDayInMs)
