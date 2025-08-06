@@ -267,8 +267,39 @@ header.top {
 .habits-list {
     display: flex;
     justify-content: center;
+    align-items: center;
+    gap: 20px;
+    font-size: 24px;
+    width: 500px;
 }
 
+.habits-list button { /* #1f29375e; */
+    font-family:Arial, Helvetica, sans-serif;
+    color: #1f293754;
+
+    display: flex;
+    flex: 1 0 auto;
+    max-width: fit-content;
+    border-style: none;
+    justify-content: center;
+    align-items: center;
+    background-color: #d9d9d900;
+    box-sizing: content-box;
+    font-size: 24px;
+    font-weight: 700;
+    border-radius: 30px;
+    width: 40px;
+    height: 28px;
+    padding: 8px 18px;
+}
+
+.habits-list button.selected { /* #1f29375e; */
+    color: #1f2937;
+}
+
+.habits-list button:not(.selected):hover {
+    background-color: #d9d9d95b;
+}
 
 .add-habit {
     margin: 20px;
