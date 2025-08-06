@@ -12,24 +12,22 @@ const cards = document.querySelector(".cards");
 const addButton = document.querySelector(".add-habit");
 const cardTemplate = document.querySelector("#card-template");
 const extenderTemplate = document.querySelector("#extender-template");
+
+const sectionButtons = document.querySelector(".habits-list");
+const mainSection = document.querySelector(".section1");
+const completedSection = document.querySelector(".section2");
+     /* ? */
+
 const hidden = document.querySelector("#detached-container");
 const extender = extenderTemplate.content.firstElementChild;
 const saveButton = extender.querySelector(".save-habit");
 const deleteButton = extender.querySelector(".delete-habit");
-const sectionButtons = document.querySelector(".habits-list");
-const mainSection = document.querySelector(".section1");
-const completedSection = document.querySelector(".section2");
-
 const inputTitle = extender.querySelector("#habit_name_input");
 const inputTime = extender.querySelector("#time");
 
-const cardsArray = document.querySelectorAll(".habit-card");
 
-for (const card of cardsArray) {
-    card.addEventListener("click", (e) => {
-        if (e.target != saveButton) card.appendChild(extender);
-    })
-}
+
+
 
 addButton.addEventListener("click", () => newHabit());
 sectionButtons.addEventListener("click", (e) => {
