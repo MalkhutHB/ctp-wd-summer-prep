@@ -16,6 +16,9 @@ const hidden = document.querySelector("#detached-container");
 const extender = extenderTemplate.content.firstElementChild;
 const saveButton = extender.querySelector(".save-habit");
 const deleteButton = extender.querySelector(".delete-habit");
+const sectionButtons = document.querySelector(".habits-list");
+const mainSection = document.querySelector(".section1");
+const completedSection = document.querySelector(".section2");
 
 const inputTitle = extender.querySelector("#habit_name_input");
 const inputTime = extender.querySelector("#time");
@@ -29,6 +32,16 @@ for (const card of cardsArray) {
 }
 
 addButton.addEventListener("click", () => newHabit());
+sectionButtons.addEventListener("click", (e) => {
+    if (!e.target.classList.contains("selected") && e.target == mainSection) {
+        mainSection.classList.add("selected");
+        completedSection.classList.remove("selected");
+    }
+    else if (!e.target.classList.contains("selected") && e.target == completedSection) {
+        completedSection.classList.add("selected");
+        mainSection.classList.remove("selected");
+    }
+});
 renderHabits();
 
 function extenderFill(habitId) {
@@ -115,7 +128,7 @@ function renderHabits() {
         const today = new Date();
 
         article.dataset.habitId = habitId;  // isSameDay(today, habits[habitId].completionDates.at(-1)) bugged though
-        if (habits[habitId].completionDates && today - habits[habitId].completionDates.at(-1) < oneDayInMs) {
+        if (habits[habitId].completionDates && isSameDay(today, habits[habitId].completionDates.at(-1))) {
             completedStatus.textContent = "completed ☑️";
             completionIcon.classList.add("completed");
         }   
@@ -179,6 +192,7 @@ function completeHabit(habitId) { // unused
 }
 
 function isSameDay(date1, date2) {
+    if (!date2) return false;
     date1.setHours(0, 0, 0, 0);
     date2.setHours(0, 0, 0, 0);
     return date1.getTime() === date2.getTime();
@@ -194,3 +208,6 @@ function isSameDay(date1, date2) {
 // Shouldn't have the opportunity to mark it complete until it reopens. I guess to make it simple, at 00:00 the day, and the next day/week
 // Need to add frequency paramater to addHabit for this. 
 // And again for testing, add date parameter to completeHabit
+
+
+//today - habits[habitId].completionDates.at(-1) < oneDayInMs)
