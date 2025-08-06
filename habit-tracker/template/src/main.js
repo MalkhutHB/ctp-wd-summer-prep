@@ -11,19 +11,23 @@ let habits = habitsParsed;
 const cards = document.querySelector(".cards");
 const addButton = document.querySelector(".add-habit");
 const cardTemplate = document.querySelector("#card-template");
-const extenderTemplate = document.querySelector("#extender-template");
-
 const sectionButtons = document.querySelector(".habits-list");
 const mainSection = document.querySelector(".section1");
 const completedSection = document.querySelector(".section2");
-     /* ? */
+
 
 const hidden = document.querySelector("#detached-container");
+const extenderTemplate = document.querySelector("#extender-template");
 const extender = extenderTemplate.content.firstElementChild;
 const saveButton = extender.querySelector(".save-habit");
 const deleteButton = extender.querySelector(".delete-habit");
 const inputTitle = extender.querySelector("#habit_name_input");
 const inputTime = extender.querySelector("#time");
+const repeatOptions = extender.querySelector(".repeat-options");
+const daily = extender.querySelector(".daily");
+const weekly = extender.querySelector(".weekly");
+const none = extender.querySelector(".none");
+
 
 
 
@@ -46,12 +50,34 @@ renderHabits("main");
 
 function extenderFill(habitId) {
     inputTitle.value = habits[habitId].name;
-    inputTime.value = habits[habitId].reminderTime;
+    inputTime.value = habits[habitId].reminderTime; //
+    repeatSet(habits[habitId].repeat);
+}
+
+function repeatSet(option) {
+    weekly.classList.remove("clicked");
+    none.classList.remove("clicked");
+    daily.classList.remove("clicked");
+    let clear = false;
+    switch (option) {
+        case "daily":
+            option = daily;
+            break;
+        case "weekly":
+            option = weekly;
+            break;
+        case "none": 
+            option = none;
+            break;
+        default: 
+            clear = true;
+    }
+    if (!clear) option.classList.add("clicked");
 }
 
 function extenderClear() {
     inputTitle.value = "";
-    inputTime.value = "10:00";
+    inputTime.value = "10:00";  //
 }
 
 function habitInteract(e, article, habitId) {
@@ -81,6 +107,18 @@ function habitInteract(e, article, habitId) {
             localStorage.setItem("habits", JSON.stringify(habits));
         }
     } else if (e.target == percentInner) { //console.log("inner pressed");
+    } else if (repeatOptions.contains(e.target)) {
+        if (e.target.classList.contains("daily")) {
+            habits[habitId].repeat = "daily";
+            repeatSet("daily");
+        } else if (e.target.classList.contains("weekly")) {
+            habits[habitId].repeat = "weekly";
+            repeatSet("weekly");
+        } else if (e.target.classList.contains("none")) {
+            habits[habitId].repeat = "none";
+            repeatSet("none");
+        } else console.log("bugged repeat selector?");
+        localUpdate();
     } else if (habitTop.contains(e.target) && article.querySelector(".habit-card-extender")) {
         hidden.appendChild(extender);
     } else if (!article.querySelector(".habit-card-extender")) { 
@@ -156,6 +194,9 @@ function renderClear() {
     cards.replaceChildren();
 }
 
+function localUpdate() {
+    localStorage.setItem("habits", JSON.stringify(habits));
+}
 
 function storeHabit(article) {
     date = new Date();
@@ -166,6 +207,7 @@ function storeHabit(article) {
         startDate: date,
         completionDates: [],
         reminderTime: "10:00",
+        repeat: "daily",
     };
     localStorage.setItem("habits", JSON.stringify(habits));
     return habitId;

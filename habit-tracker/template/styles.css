@@ -170,12 +170,18 @@ body {
     color: #767676;
 }
 
-.repeat:hover {
+.repeat:hover {                  /* would rather this be a mousedown effect but requires JS so later*/
+    border-style: solid;
+    border-color: #767676; 
+}
+
+.repeat.clicked {
     background-color: #f9faf8;
     border-style: solid;
     color: #269cc7;
     border-color: #269cc7;
 }
+
 
 .time-section {
     display: flex;
