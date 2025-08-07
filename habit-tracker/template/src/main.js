@@ -1,5 +1,6 @@
 const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 const daysArray = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
+/*                    0         1          2           3           4          5           6                   */
 
 const habitsJson = localStorage.getItem("habits");
 let habitsParsed = JSON.parse(habitsJson || "{}", (key, value) => { // startDate unusued but will be useful for completion statistics later
@@ -30,10 +31,6 @@ const weekly = extender.querySelector(".weekly");
 const none = extender.querySelector(".none");
 const selectDaysTitle = extender.querySelector("#select-days-title");
 const daysButtons = extender.querySelector(".days");
-
-
-
-
 
 
 
@@ -213,11 +210,14 @@ function renderHabits(section) {
         const completedStatus = article.querySelector(".status"); 
         const completionIcon = article.querySelector(".habit-icon"); 
         
+        const timeframe = habits[habitId].repeat;
+        const completionDates = habits[habitId].completionDates;
+        const repeatDays = habits[habitId].repeatDays;
         const oneDayInMs = 1000 * 60 * 60 * 24;
         const today = new Date();
 
-        article.dataset.habitId = habitId;  // isSameDay(today, habits[habitId].completionDates.at(-1)) bugged though
-        if (habits[habitId].completionDates && isSameTimeframe("day", today, habits[habitId].completionDates.at(-1))) {
+        article.dataset.habitId = habitId;  
+        if (completionDates && isSameTimeframe(timeframe, repeatDays, today, completionDates.at(-1))) {
             completedStatus.textContent = "completed ☑️";
             completionIcon.classList.add("completed");
             if (main) continue;
@@ -292,16 +292,36 @@ function completeHabit(habitId) { // unused
     localStorage.setItem("habits", JSON.stringify(habits));
 }
 
-function isSameTimeframe(timeframe, date1, date2, whichDays) {
-    if (!date2) return false;
-    if (timeframe.toLowerCase() === "day") {
-        date1.setHours(0, 0, 0, 0);
-        date2.setHours(0, 0, 0, 0);
-        return date1.getTime() === date2.getTime();
-    }
-    if (timeframe.toLowerCase() === "week") {
+function isSameTimeframe(repeat, repeatDays, date1, lastCompletedDate) { 
+    if (!lastCompletedDate) return false;
 
+    date1.setHours(0, 0, 0, 0);
+    lastCompletedDate.setHours(0, 0, 0, 0);
+    if (repeat === "daily") {
+        return date1.getTime() === lastCompletedDate.getTime();
     }
+    else if (repeat === "weekly") {
+        for (const day of repeatDays) {
+            const lastSuchDay = calcLastSuchDay(day);
+            if (lastSuchDay > lastCompletedDate) return false;
+        }
+        return true;
+    }
+    else if (repeat === "none") {
+        return true; 
+    }
+}
+
+function calcLastSuchDay(day) {
+    const today = new Date();
+    const lastDayNumber = daysArray.indexOf(day);
+    const todayNumber = today.getDay();
+    let diff = todayNumber - lastDayNumber;
+    if (diff < 0) diff += 7;
+    const lastSuch = new Date();
+    lastSuch.setDate(lastSuch.getDate() - diff);
+    lastSuch.setHours(0,0,0,0);
+    return lastSuch;
 }
 
 // function to calc streak. Basically did alr. But, need local storage for this to even matter. 
