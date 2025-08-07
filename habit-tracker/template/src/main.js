@@ -165,6 +165,7 @@ function habitInteract(e, article, habitId) {
     } else if (daysButtons.contains(e.target) && e.target != daysButtons) {
         setDays(e.target, habitId);
     } else if (habitTop.contains(e.target) && article.querySelector(".habit-card-extender")) {
+        changeHabit(article);
         hidden.appendChild(extender);
     } else if (!article.querySelector(".habit-card-extender")) { 
         article.appendChild(extender);
@@ -316,5 +317,3 @@ function isSameTimeframe(timeframe, date1, date2, whichDays) {
 
 // today - habits[habitId].completionDates.at(-1) < oneDayInMs)
 
-
-// design issue, idk if i should let the form close without save, save. On one hand it's cool. But idk. 
