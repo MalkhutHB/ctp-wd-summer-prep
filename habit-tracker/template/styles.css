@@ -35,7 +35,6 @@ body {
     background-color: #f9faf8;
 }
 .habit-card-main {
-    
     height: 120px;
     display: flex;
     align-items: center;
@@ -178,9 +177,15 @@ body {
     border-color: #269cc7;
 }
 
-.select-days-title {
+#select-days-title {
     margin-bottom: 15px;
+    color: #76767660;
 }
+
+#select-days-title.available {
+    color: #000000;
+}
+
 .days {
     display: flex;
     max-height: fit-content;
@@ -192,19 +197,41 @@ body {
 .days button {
     width: 50px;
     height: 60px;
+    background-color: #a4c6dd1f;
+    border-radius: 15px;
+    border-style: none;
+    font-size: 16px;
+    font-weight: 700;
+    color: #76767660;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.days.available button {
+    width: 50px;
+    height: 60px;
     background-color: #a4c6dd39;
     border-radius: 15px;
     border-style: none;
     font-size: 16px;
+    font-weight: 700;
     color: #767676;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.days button:hover {
+.days.available button:hover { /* hover works here unlike with repeat buttons because multiple can be selected */
     border-style: solid;        
     border-color: #767676; 
+}
+
+.days.available button.clicked {
+    background-color: #f9faf8;
+    border-style: solid;
+    color: #269cc7;
+    border-color: #269cc7;
 }
 
 .time-section {

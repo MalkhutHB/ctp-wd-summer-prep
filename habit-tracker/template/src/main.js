@@ -1,4 +1,5 @@
 const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+const daysArray = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
 
 const habitsJson = localStorage.getItem("habits");
 let habitsParsed = JSON.parse(habitsJson || "{}", (key, value) => { // startDate unusued but will be useful for completion statistics later
@@ -27,6 +28,10 @@ const repeatOptions = extender.querySelector(".repeat-options");
 const daily = extender.querySelector(".daily");
 const weekly = extender.querySelector(".weekly");
 const none = extender.querySelector(".none");
+const selectDaysTitle = extender.querySelector("#select-days-title");
+const daysButtons = extender.querySelector(".days");
+
+
 
 
 
@@ -52,12 +57,15 @@ function extenderFill(habitId) {
     inputTitle.value = habits[habitId].name;
     inputTime.value = habits[habitId].reminderTime; //
     repeatSet(habits[habitId].repeat);
+    renderDays(habits[habitId].repeatDays);
 }
 
 function repeatSet(option) {
     weekly.classList.remove("clicked");
     none.classList.remove("clicked");
     daily.classList.remove("clicked");
+    selectDaysTitle.classList.remove("available");
+    daysButtons.classList.remove("available");
     let clear = false;
     switch (option) {
         case "daily":
@@ -65,6 +73,8 @@ function repeatSet(option) {
             break;
         case "weekly":
             option = weekly;
+            selectDaysTitle.classList.add("available");
+            daysButtons.classList.add("available");
             break;
         case "none": 
             option = none;
@@ -75,9 +85,42 @@ function repeatSet(option) {
     if (!clear) option.classList.add("clicked");
 }
 
+function setDays(button, habitId) {
+    if (typeof button === "string") button = daysButtons.querySelector(`#${button}`);
+    const day = button.id;
+    button.classList.toggle("clicked");
+    let repeatDays = habits[habitId].repeatDays; 
+    const index = repeatDays.indexOf(day);
+    if (index != -1) repeatDays.splice(index, 1);
+    else repeatDays.push(button.id);
+    localUpdate();
+}
+
+function renderDays(daysList) { 
+    if (!daysList) throw new error("input undefined");
+    renderDaysEmpty();
+    for (const day of daysList) {
+        let button = daysButtons.querySelector(`#${day}`);
+        button.classList.add("clicked");  
+    }
+}
+
+function renderDaysEmpty() {
+    for (const day of daysArray) {
+        let button = daysButtons.querySelector(`#${day}`);
+        button.classList.remove("clicked");  
+    }
+}
+
+function getDayButton(day) {
+    
+}
+
 function extenderClear() {
     inputTitle.value = "";
     inputTime.value = "10:00";  //
+    repeatSet("daily");
+    for (const day of daysArray) renderDaysEmpty();
 }
 
 function habitInteract(e, article, habitId) {
@@ -119,6 +162,8 @@ function habitInteract(e, article, habitId) {
             repeatSet("none");
         } else console.log("bugged repeat selector?");
         localUpdate();
+    } else if (daysButtons.contains(e.target) && e.target != daysButtons) {
+        setDays(e.target, habitId);
     } else if (habitTop.contains(e.target) && article.querySelector(".habit-card-extender")) {
         hidden.appendChild(extender);
     } else if (!article.querySelector(".habit-card-extender")) { 
@@ -145,9 +190,10 @@ function newHabit() {
     }
     const clone = cardTemplate.content.cloneNode(true);
     const article = clone.querySelector("article");
-    extenderClear();
-    article.appendChild(extender);
     const habitId = storeHabit(article);
+    extenderClear(habitId);
+    article.appendChild(extender);
+    
 
     article.addEventListener("click", (e) => habitInteract(e, article, habitId));
     article.addEventListener("dblclick", (e) => habitInteractDouble(e, article, habitId)); /*temporary? can have warning popup that can be disabled permanently*/
@@ -208,6 +254,7 @@ function storeHabit(article) {
         completionDates: [],
         reminderTime: "10:00",
         repeat: "daily",
+        repeatDays: [], //repeatDays: [daysArray[date.getDay()]] for now too comlpxe i leave in 2 min
     };
     localStorage.setItem("habits", JSON.stringify(habits));
     return habitId;
@@ -268,3 +315,6 @@ function isSameTimeframe(timeframe, date1, date2, whichDays) {
 
 
 // today - habits[habitId].completionDates.at(-1) < oneDayInMs)
+
+
+// design issue, idk if i should let the form close without save, save. On one hand it's cool. But idk. 
