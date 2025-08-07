@@ -89,6 +89,7 @@ function setDays(button, habitId) {
     if (typeof button === "string") button = daysButtons.querySelector(`#${button}`);
     const day = button.id;
     button.classList.toggle("clicked");
+    if (!habits[habitId].repeatDays) habits[habitId]["repeatDays"] = []; // for cards created and stored with my old code  
     let repeatDays = habits[habitId].repeatDays; 
     const index = repeatDays.indexOf(day);
     if (index != -1) repeatDays.splice(index, 1);
@@ -97,7 +98,7 @@ function setDays(button, habitId) {
 }
 
 function renderDays(daysList) { 
-    if (!daysList) throw new error("input undefined");
+    if (!daysList) throw new Error("input undefined");
     renderDaysEmpty();
     for (const day of daysList) {
         let button = daysButtons.querySelector(`#${day}`);
