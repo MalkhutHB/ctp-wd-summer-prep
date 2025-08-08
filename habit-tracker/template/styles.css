@@ -17,6 +17,97 @@ body {
     letter-spacing: 0.02em;
 }
 
+/* calendar */
+
+.calendar {
+    display: flex;
+    gap: 10px;
+    margin: 30px 0px 70px;
+    width: fit-content;
+}
+
+.calendar-day {
+    user-select: none;
+    font-size: 22px;
+    font-weight: 700;
+    height: 100px;
+    width: 80px;
+    color:#1f29373c;
+    border-color: #269cc7;
+    border-style: none;
+    /* border-top-style: solid;
+    border-top-color: #bababa81;
+    border-top-width: 1px; */
+    /* border-bottom-style: solid;
+    border-bottom-color:#ffffffa2;
+    border-bottom-width: 1px; */
+    border-radius: 20px;
+    background-color: #f9faf8;
+    /* box-shadow: inset 0px 6px 10px -5px #bababa,
+    inset -2px -5px 10px 0px #ffffff; */
+    
+    /* box-shadow:  -2px -7px 10px -5px #bababa,
+    4px 6px 10px 0px #ffffff; */
+}
+
+.cal-day-num {
+    font-size: 35px;
+}
+
+.cal-day-of-week {
+    font-size: 20px;
+}
+
+
+
+.calendar-day:hover {
+    color:#24303e;
+    box-shadow: none;   
+    border-style: none;
+    
+    
+    box-shadow:  -50px 5px 10px -20px #f9faf87a,
+    50px 5px 10px -20px #f9faf87e,
+    0px 6px 10px -5px #bababa,
+    0px -7px 10px 0px #ffffff;
+}
+
+.calendar-day.clicked {
+    /* color:#289EEB; */
+    color:#000000;
+    box-shadow: none;   
+    border-style: none;
+    box-shadow:  -50px 5px 10px -20px #f9faf87a,
+    50px 5px 10px -20px #f9faf87e,
+    0px 6px 10px -5px #bababa,
+    0px -7px 10px 0px #ffffff;
+}
+
+.calendar-day.test:hover {
+    color:#269cc7;
+    box-shadow: none;   
+    border-style: none;
+    
+    box-shadow: 
+    0px -4px 10px 8px #ffffffdc, 
+    0px 5px 10px 0px #a2a2a2;
+}
+
+.calendar-day.test {
+    color:#269cc7;
+    box-shadow: none;   
+    border-style: none;
+    
+    box-shadow:  -50px 5px 10px -40px #f9faf8bc,
+    50px 5px 10px -40px #f9faf8bc,
+    1px -4px 10px 8px #fffefe, 
+    -1px 5px 10px 0px #9c9c9c;
+}
+
+
+
+
+
 .cards {
     display: flex;
     flex-direction: column;
@@ -25,7 +116,7 @@ body {
 }
 
 .habit-card {
-    box-shadow: 0px 8px 21px -3px rgba(0,0,0,0.15);
+    box-shadow: -2px 8px 21px -3px rgba(0,0,0,0.15);
     box-sizing: border-box;
     border-radius: 30px;
     width: 750px;
@@ -360,7 +451,7 @@ header.top {
 }
 
 .add-habit {
-    margin: 20px;
+    margin: 30px;
     width: 200px;
     height: 55px;
     background: linear-gradient(to bottom, #5BAAC7 0%, #289EEB 50%, #257B9E 100%);

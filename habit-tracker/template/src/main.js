@@ -16,6 +16,7 @@ const cardTemplate = document.querySelector("#card-template");
 const sectionButtons = document.querySelector(".habits-list");
 const mainSection = document.querySelector(".section1");
 const completedSection = document.querySelector(".section2");
+const calendar = document.querySelector(".calendar");
 
 
 const hidden = document.querySelector("#detached-container");
@@ -35,6 +36,7 @@ const daysButtons = extender.querySelector(".days");
 
 
 
+
 addButton.addEventListener("click", () => newHabit());
 sectionButtons.addEventListener("click", (e) => {
     if (!e.target.classList.contains("selected") && e.target == mainSection) {
@@ -49,6 +51,18 @@ sectionButtons.addEventListener("click", (e) => {
     }
 });
 renderHabits("main");
+
+calendar.addEventListener("click", (e) => calendarInteract(e));
+
+function calendarInteract(e) {
+    if (e.target == calendar) return;
+    for (const child of calendar.children) child.classList.remove("clicked");
+    if (e.target.tagName === "DIV") {
+        e.target.parentElement.classList.add("clicked");
+    } else {
+        e.target.classList.add("clicked");
+    }
+}
 
 function extenderFill(habitId) {
     inputTitle.value = habits[habitId].name;
@@ -214,7 +228,7 @@ function renderHabits(section) {
         const completionDates = habits[habitId].completionDates;
         const repeatDays = habits[habitId].repeatDays;
         const oneDayInMs = 1000 * 60 * 60 * 24;
-        const today = new Date();
+        const today = new Date(); /*marker for later*/ /*will make calandarDate() for fake dates*/ /* Wait no. I just need to pass a var to date... And change on calandar click what am I saying*/
 
         article.dataset.habitId = habitId;  
         if (completionDates && isSameTimeframe(timeframe, repeatDays, today, completionDates.at(-1))) {
@@ -313,12 +327,12 @@ function isSameTimeframe(repeat, repeatDays, date1, lastCompletedDate) {
 }
 
 function calcLastSuchDay(day) {
-    const today = new Date();
+    const today = new Date(); /*marker for later*/
     const lastDayNumber = daysArray.indexOf(day);
     const todayNumber = today.getDay();
     let diff = todayNumber - lastDayNumber;
     if (diff < 0) diff += 7;
-    const lastSuch = new Date();
+    const lastSuch = new Date(); /*marker for later*/
     lastSuch.setDate(lastSuch.getDate() - diff);
     lastSuch.setHours(0,0,0,0);
     return lastSuch;
