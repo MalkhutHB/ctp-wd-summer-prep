@@ -1,0 +1,112 @@
+body {
+    font-family:Arial, Helvetica, sans-serif;
+    background-color: #f9faf8;
+    color: #1f2937;
+    /* margin: 40px 240px 40px; */
+}
+
+body {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+* {
+    letter-spacing: 0.02em;
+}
+
+
+
+
+
+
+
+/* Sort Later */
+header.top {
+    height: 250px;
+    width: 700px;
+    display: flex;
+}
+
+.title {
+    align-self: flex-start;
+}
+
+.header-right {
+    width: 5px;
+    flex: 1 1 auto;
+}
+
+.habits-list {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    font-size: 24px;
+    width: 500px;
+}
+
+.habits-list button { /* #1f29375e; */
+    font-family:Arial, Helvetica, sans-serif;
+    color: #1f293754;
+
+    display: flex;
+    flex: 1 0 auto;
+    max-width: fit-content;
+    border-style: none;
+    justify-content: center;
+    align-items: center;
+    background-color: #d9d9d900;
+    box-sizing: content-box;
+    font-size: 24px;
+    font-weight: 700;
+    border-radius: 30px;
+    width: 40px;
+    height: 28px;
+    padding: 8px 18px;
+}
+
+.habits-list button.selected { /* #1f29375e; */
+    color: #1f2937;
+}
+
+.habits-list button:not(.selected):hover {
+    background-color: #d9d9d95b;
+}
+
+
+
+
+
+
+
+
+
+
+
+.add-habit {
+    margin: 30px;
+    width: 200px;
+    height: 55px;
+    background: linear-gradient(to bottom, #5BAAC7 0%, #289EEB 50%, #257B9E 100%);
+    border-radius: 15px;
+    border-style: none;
+    font-size: 20px;
+    color: #ffffff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 500;
+    box-shadow: 0px 2px 15px 3px rgba(91,170,199,0.55);
+}
+
+.add-habit:hover {
+    transform: scale(1.01);
+}
+
+.add-habit .plus {
+    font-size: 30px;
+    margin-right: 5px;
+}
