@@ -1,6 +1,6 @@
 const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 const daysArray = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
-/*                    0         1          2           3           4          5           6                   */
+const daysArrayShort = ['Su', 'Mo', 'Tu', 'Wed', 'Th', 'Fr', 'Sa'];
 
 const habitsJson = localStorage.getItem("habits");
 let habitsParsed = JSON.parse(habitsJson || "{}", (key, value) => { // startDate unusued but will be useful for completion statistics later
@@ -74,6 +74,19 @@ function calendarInteract(e) {
         renderHabits(selected);
     }
 }
+
+function renderCalendar() {
+    for (const child of calendar.children) {
+        const offset = child.dataset.timeOffset;
+        const weekDay = child.querySelector(".cal-day-of-week");
+        const numDay = child.querySelector(".cal-day-num");
+        let tempDate = new Date();
+        tempDate.setDate(TODAY.getDate() + Number(offset));
+        weekDay.textContent = daysArrayShort[tempDate.getDay()];
+        numDay.textContent = tempDate.getDate();
+    }
+}
+renderCalendar();
 
 function extenderFill(habitId) {
     inputTitle.value = habits[habitId].name;
