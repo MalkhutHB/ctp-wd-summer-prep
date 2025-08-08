@@ -17,6 +17,8 @@ const sectionButtons = document.querySelector(".habits-list");
 const mainSection = document.querySelector(".section1");
 const completedSection = document.querySelector(".section2");
 const calendar = document.querySelector(".calendar");
+const TODAY = new Date();
+let calendarDay = new Date();
 
 
 const hidden = document.querySelector("#detached-container");
@@ -34,6 +36,7 @@ const selectDaysTitle = extender.querySelector("#select-days-title");
 const daysButtons = extender.querySelector(".days");
 
 
+let selected = "main";
 
 
 
@@ -42,11 +45,13 @@ sectionButtons.addEventListener("click", (e) => {
     if (!e.target.classList.contains("selected") && e.target == mainSection) {
         mainSection.classList.add("selected");
         completedSection.classList.remove("selected");
+        selected = "main";
         renderHabits("main");
     }
     else if (!e.target.classList.contains("selected") && e.target == completedSection) {
         completedSection.classList.add("selected");
         mainSection.classList.remove("selected");
+        selected = "completed";
         renderHabits("completed");
     }
 });
@@ -59,8 +64,14 @@ function calendarInteract(e) {
     for (const child of calendar.children) child.classList.remove("clicked");
     if (e.target.tagName === "DIV") {
         e.target.parentElement.classList.add("clicked");
+        const offset = e.target.parentElement.dataset.timeOffset;
+        calendarDay.setDate(TODAY.getDate() + Number(offset));
+        renderHabits(selected);
     } else {
         e.target.classList.add("clicked");
+        const offset = e.target.dataset.timeOffset;
+        calendarDay.setDate(TODAY.getDate() + Number(offset));
+        renderHabits(selected);
     }
 }
 
@@ -228,7 +239,7 @@ function renderHabits(section) {
         const completionDates = habits[habitId].completionDates;
         const repeatDays = habits[habitId].repeatDays;
         const oneDayInMs = 1000 * 60 * 60 * 24;
-        const today = new Date(); /*marker for later*/ /*will make calandarDate() for fake dates*/ /* Wait no. I just need to pass a var to date... And change on calandar click what am I saying*/
+        const today = new Date(calendarDay); /*marker for later*/ /*will make calandarDate() for fake dates*/ /* Wait no. I just need to pass a var to date... And change on calandar click what am I saying*/
 
         article.dataset.habitId = habitId;  
         if (completionDates && isSameTimeframe(timeframe, repeatDays, today, completionDates.at(-1))) {
@@ -315,8 +326,8 @@ function isSameTimeframe(repeat, repeatDays, date1, lastCompletedDate) {
         return date1.getTime() === lastCompletedDate.getTime();
     }
     else if (repeat === "weekly") {
-        for (const day of repeatDays) {
-            const lastSuchDay = calcLastSuchDay(day);
+        for (const weekday of repeatDays) {
+            const lastSuchDay = calcLastSuchDay(weekday);
             if (lastSuchDay > lastCompletedDate) return false;
         }
         return true;
@@ -327,12 +338,12 @@ function isSameTimeframe(repeat, repeatDays, date1, lastCompletedDate) {
 }
 
 function calcLastSuchDay(day) {
-    const today = new Date(); /*marker for later*/
+    const today = new Date(calendarDay); /*marker for later*/
     const lastDayNumber = daysArray.indexOf(day);
     const todayNumber = today.getDay();
     let diff = todayNumber - lastDayNumber;
     if (diff < 0) diff += 7;
-    const lastSuch = new Date(); /*marker for later*/
+    const lastSuch = new Date(calendarDay); /*marker for later*/
     lastSuch.setDate(lastSuch.getDate() - diff);
     lastSuch.setHours(0,0,0,0);
     return lastSuch;

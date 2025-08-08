@@ -32,7 +32,7 @@ body {
     font-weight: 700;
     height: 100px;
     width: 80px;
-    color:#1f29373c;
+    color:#c6c9cb;
     border-color: #269cc7;
     border-style: none;
     /* border-top-style: solid;
@@ -61,7 +61,7 @@ body {
 
 
 .calendar-day:hover {
-    color:#24303e;
+    color:#373737;
     box-shadow: none;   
     border-style: none;
     
