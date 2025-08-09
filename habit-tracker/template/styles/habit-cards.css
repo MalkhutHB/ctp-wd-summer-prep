@@ -2,15 +2,21 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
+    align-items: center;
     gap: 20px;
+    max-width: 1750px;
+    width: 90vw;
+    margin: 0px 40px;
 }
 
 .habit-card {
     box-shadow: -2px 8px 21px -3px rgba(0,0,0,0.15);
     box-sizing: border-box;
     border-radius: 30px;
-    width: 750px;
-    margin-top: 0px;
+    
+    width: 100%;
+    max-width: 750px; 
+    
     padding: 0px 30px;
     color: black;
     background-color: #f9faf8;
@@ -27,10 +33,6 @@
     background-color: #f9faf8;
     border-style: solid;
     border-radius: 5px;
-}
-
-.habit-title {
-    font-size: 20px;
 }
 
 .habit-icon {
@@ -67,7 +69,7 @@
     /* border-width: 5px; */
     /* border-color: rgb(38, 121, 255); */
     background: linear-gradient(to bottom, #96BCFF 0%, #5E84FF 100%, #757575 100%);
-    margin-left: 230px;
+    margin-left: 20px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -88,14 +90,26 @@
 }
 
 .habit-card-main .text {
-    width: 100px;
-    flex: 1 1 auto;
+    width: 5px;
+    flex: 1 0 auto;
     display: flex;
     flex-direction: column;
     justify-items: center;
     gap: 8px;
 }
 
+.habit-title {
+    font-size: 20px;
+    white-space: normal;                     
+    max-width: 520px;                 /*this is obviously bad on big screens, learn media queries and stuff yeah gl*/
+}                                       /* in general the cards and font need to go smaller, looks jumbo even on big phones*/
+
+
+@media (max-width: 550px) {
+    .habit-title {
+        max-width: 550px; 
+    }
+}
 .habit-card-main h2, .habit-card-main span {
     margin: 0;
 }
