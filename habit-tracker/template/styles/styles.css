@@ -11,6 +11,12 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  width: 100vw;
+  overflow-x: hidden;
+}
+
+html {
+    overflow-x: hidden;
 }
 
 * {
@@ -83,7 +89,12 @@ header.top {
 
 
 
-
+.dynamic-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 550px;
+}
 
 
 
