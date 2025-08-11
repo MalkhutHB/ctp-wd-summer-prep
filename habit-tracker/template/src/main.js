@@ -233,7 +233,7 @@ function newHabit() {
     
 
     article.addEventListener("click", (e) => habitInteract(e, article, habitId));
-    article.addEventListener("dblclick", (e) => habitInteractDouble(e, article, habitId)); /*temporary? can have warning popup that can be disabled permanently*/
+    article.addEventListener("dblclick", (e) => habitInteractDouble(e, article, habitId)); /*warning popup that can be disabled permanently?*/
     cards.appendChild(clone);
 }
 
@@ -294,7 +294,7 @@ function storeHabit(article) {
         completionDates: [],
         reminderTime: "10:00",
         repeat: "daily",
-        repeatDays: [], //repeatDays: [daysArray[date.getDay()]] for now too comlpxe i leave in 2 min
+        repeatDays: [], //repeatDays: [daysArray[date.getDay()]] need this but wont rn cuz 
     };
     localStorage.setItem("habits", JSON.stringify(habits));
     return habitId;
