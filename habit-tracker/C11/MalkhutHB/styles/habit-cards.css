@@ -3,45 +3,51 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 20px;
-    max-width: 1750px;
+    gap: 1.25rem;
+    max-width: 109.375rem;
     width: 90vw;
-    margin: 0px 40px;
+    margin: 0rem 2.5rem;
 }
 
 .habit-card {
     box-shadow: -2px 8px 21px -3px rgba(0,0,0,0.15);
     box-sizing: border-box;
-    border-radius: 30px;
+    border-radius: 1.875rem;
     
     width: 100%;
-    max-width: 750px; 
+    max-width: 46.875rem; 
     
-    padding: 0px 30px;
+    padding: 0rem 1.875rem;
     color: black;
     background-color: #f9faf8;
 }
+
 .habit-card-main {
-    height: 120px;
+    height: 7.5rem;
     display: flex;
     align-items: center;
     flex: 0 1 auto;
 }
 
+@media (max-width: 500px) {
+    .habit-card-main {
+        height: 7rem;
+    }
+}
 .habit-card-main button {
     color: black;
     background-color: #f9faf8;
     border-style: solid;
-    border-radius: 5px;
+    border-radius: 0.3125rem;
 }
 
 .habit-icon {
     box-sizing: border-box;
-    height: 60px;
-    width: 60px;
+    height: 3.75rem;
+    width: 3.75rem;
     /* border-style: solid; */
     border-radius: 100%;
-    margin-right: 20px;
+    margin-right: 1.25rem;
     background-color: #dedddd;
     background: linear-gradient(45deg, #A4A4A4 0%, #CBCBCB 100%, #757575 100%);
     flex: 0 0 auto;
@@ -62,26 +68,26 @@
 
 .completion-percent {
     flex: 0 0 auto;
-    height: 70px;
-    width: 70px;
+    height: 4.375rem;
+    width: 4.375rem;
     /* border-style: solid; */
     border-radius: 100%;
     /* border-width: 5px; */
     /* border-color: rgb(38, 121, 255); */
     background: linear-gradient(to bottom, #96BCFF 0%, #5E84FF 100%, #757575 100%);
-    margin-left: 20px;
+    margin-left: 1.25rem;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
 .inner-circle {
-    height: 55px;
-    width: 55px;
+    height: 3.4375rem;
+    width: 3.4375rem;
     box-sizing: border-box;
     border-radius: 100%;
     background-color: white;
-    font-size: 16px;
+    font-size: 1rem;
     font-weight: 700;
     display: flex;
     justify-content: center;
@@ -90,24 +96,24 @@
 }
 
 .habit-card-main .text {
-    width: 5px;
+    width: 0.3125rem;
     flex: 1 0 auto;
     display: flex;
     flex-direction: column;
     justify-items: center;
-    gap: 8px;
+    gap: 0.5rem;
 }
 
 .habit-title {
-    font-size: 20px;
+    font-size: 1.25rem;
     white-space: normal;                     
-    max-width: 520px;                 /*this is obviously bad on big screens, learn media queries and stuff yeah gl*/
+    max-width: 32.5rem;                 /*this is obviously bad on big screens, learn media queries and stuff yeah gl*/
 }                                       /* in general the cards and font need to go smaller, looks jumbo even on big phones*/
 
 
-@media (max-width: 550px) {
+@media (max-width: 34.375rem) {
     .habit-title {
-        max-width: 550px; 
+        max-width: 34.375rem; 
     }
 }
 .habit-card-main h2, .habit-card-main span {
@@ -138,40 +144,40 @@
     display: flex;
     flex-direction: column;
 
-    font-size: 18px;
+    font-size: 1.125rem;
     font-weight: 700;
 }
 
 .update-title {
-    font-size: 19px;
-    margin-bottom: 30px;
+    font-size: 1.1875rem;
+    margin-bottom: 1.875rem;
 }
 
 #habit_name_input {
     border-style: none;
     box-sizing: border-box;
-    margin: 10px 0px 30px;
-    height: 40px;
+    margin: 0.625rem 0rem 1.875rem;
+    height: 2.5rem;
     background-color: #a4c6dd39;
-    border-radius: 40px;
-    padding: 10px 20px;
-    font-size: 16px;
+    border-radius: 2.5rem;
+    padding: 0.625rem 1.25rem;
+    font-size: 1rem;
     font-weight: 500;
 }
 
 .repeat-options {
-    margin: 15px 0px 30px;
+    margin: 0.9375rem 0rem 1.875rem;
     display: flex;
-    gap: 10px;
+    gap: 0.625rem;
 }
 
 .repeat-options .repeat {
-    height: 53px;
-    width: 120px;
+    height: 3.3125rem;
+    width: 7.5rem;
     background-color: #a4c6dd39;
-    border-radius: 40px;
+    border-radius: 2.5rem;
     border-style: none;
-    font-size: 16px;
+    font-size: 1rem;
     color: #767676;
 }
 
@@ -188,7 +194,7 @@
 }
 
 #select-days-title {
-    margin-bottom: 15px;
+    margin-bottom: 0.9375rem;
     color: #76767660;
 }
 
@@ -201,16 +207,16 @@
     max-height: fit-content;
     max-width: fit-content;
     flex: 1 0 1;
-    gap: 10px;
+    gap: 0.625rem;
 }
 
 .days button {
-    width: 50px;
-    height: 60px;
+    width: 3.125rem;
+    height: 3.75rem;
     background-color: #a4c6dd1f;
-    border-radius: 15px;
+    border-radius: 0.9375rem;
     border-style: none;
-    font-size: 16px;
+    font-size: 1rem;
     font-weight: 700;
     color: #76767660;
     display: flex;
@@ -219,12 +225,12 @@
 }
 
 .days.available button {
-    width: 50px;
-    height: 60px;
+    width: 3.125rem;
+    height: 3.75rem;
     background-color: #a4c6dd39;
-    border-radius: 15px;
+    border-radius: 0.9375rem;
     border-style: none;
-    font-size: 16px;
+    font-size: 1rem;
     font-weight: 700;
     color: #767676;
     display: flex;
@@ -248,19 +254,19 @@
     display: flex;
     align-items: center;
     flex-direction: row;
-    width: 690px;
+    width: 43.125rem;
     justify-content: space-between;
 }
 
 #time {
-    margin: 15px 0px;
-    height: 53px;
-    width: 200px;
-    padding-left: 10px;
+    margin: 0.9375rem 0rem;
+    height: 3.3125rem;
+    width: 12.5rem;
+    padding-left: 0.625rem;
     background-color: #a4c6dd39;
-    border-radius: 40px;
+    border-radius: 2.5rem;
     border-style: none;
-    font-size: 16px;
+    font-size: 1rem;
     color: #767676;
     box-sizing: border-box;
     justify-content: center;
@@ -274,13 +280,13 @@
 }
 
 .save-habit {
-    margin: 20px 20px 40px;
-    width: 200px;
-    height: 55px;
+    margin: 1.25rem 1.25rem 2.5rem;
+    width: 12.5rem;
+    height: 3.4375rem;
     background: linear-gradient(to bottom, #5BAAC7 0%, #289EEB 50%, #257B9E 100%);
-    border-radius: 15px;
+    border-radius: 0.9375rem;
     border-style: none;
-    font-size: 20px;
+    font-size: 1.25rem;
     color: #ffffff;
     display: flex;
     justify-content: center;
@@ -295,13 +301,13 @@
 }
 
 .delete-habit {
-    margin: 20px 20px 40px;
-    width: 200px;
-    height: 55px;
+    margin: 1.25rem 1.25rem 2.5rem;
+    width: 12.5rem;
+    height: 3.4375rem;
     background: linear-gradient(to bottom, #FA3232 0%, #EB352D 50%, #CF201D 100%);
-    border-radius: 15px;
+    border-radius: 0.9375rem;
     border-style: none;
-    font-size: 20px;
+    font-size: 1.25rem;
     color: #ffffff;
     display: flex;
     justify-content: center;

@@ -20,6 +20,33 @@ html {
     overflow-x: hidden;
     position: relative;
     width: 100vw;
+    font-size: 16px;
+}
+
+@media (max-width: 500px) {
+    html {
+        overflow-x: visible;
+        position: relative;
+        width: 100%;
+        font-size: 12px;
+    }
+
+    body {
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        overflow-x: visible;
+        width: 100%;
+        position: static;
+    }
+
+    .site {
+        overflow-x: visible;
+        position: static;
+        width: 100%;
+    }
 }
 
 .site {
@@ -45,7 +72,7 @@ html {
 
 /* Sort Later */
 header.top {
-    height: 250px;
+    height: 15.625rem;
     width: fit-content;
     display: flex;
 }
@@ -55,7 +82,7 @@ header.top {
 }
 
 .header-right {
-    width: 5px;
+    width: 0.3125rem;
     flex: 0 1 auto;
 }
 
@@ -63,10 +90,10 @@ header.top {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 20px;
-    font-size: 24px;
+    gap: 1.25rem;
+    font-size: 1.5rem;
     width: fit-content;
-    min-width: 330px;
+    min-width: 20.625rem;
 }
 
 .habits-list button { /* #1f29375e; */
@@ -81,12 +108,12 @@ header.top {
     align-items: center;
     background-color: #d9d9d900;
     box-sizing: content-box;
-    font-size: 24px;
+    font-size: 1.5rem;
     font-weight: 700;
-    border-radius: 30px;
-    width: 40px;
-    height: 28px;
-    padding: 8px 18px;
+    border-radius: 1.875rem;
+    width: 2.5rem;
+    height: 1.75rem;
+    padding: 0.5rem 1.125rem;
 }
 
 .habits-list button.selected { /* #1f29375e; */
@@ -113,13 +140,13 @@ header.top {
 
 
 .add-habit {
-    margin: 30px;
-    width: 200px;
-    height: 55px;
+    margin: 1.875rem;
+    width: 12.5rem;
+    height: 3.4375rem;
     background: linear-gradient(to bottom, #5BAAC7 0%, #289EEB 50%, #257B9E 100%);
-    border-radius: 15px;
+    border-radius: 0.9375rem;
     border-style: none;
-    font-size: 20px;
+    font-size: 1.25rem;
     color: #ffffff;
     display: flex;
     justify-content: center;
@@ -133,6 +160,7 @@ header.top {
 }
 
 .add-habit .plus {
-    font-size: 30px;
-    margin-right: 5px;
+    font-size: 1.875rem;
+    margin-right: 0.3125rem;
 }
+
