@@ -78,10 +78,13 @@ html {
 
 /* Sort Later */
 header.top {
-    height: 8rem;
+    margin-top: 8rem;
+    height: 1rem;
     width: fit-content;
     display: flex;
+    align-items: center;
 }
+
 
 .title {
     align-self: flex-start;

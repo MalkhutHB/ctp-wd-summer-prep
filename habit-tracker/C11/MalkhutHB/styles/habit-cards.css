@@ -132,7 +132,7 @@
     display: flex;
     flex-direction: column;
     justify-items: center;
-    gap: 0.5rem;
+    gap: 0.4rem;
 }
 
 .habit-title {
@@ -141,6 +141,9 @@
     max-width: 32.5rem;                 /*this is obviously bad on big screens, learn media queries and stuff yeah gl*/
 }                                       /* in general the cards and font need to go smaller, looks jumbo even on big phones*/
 
+.time {
+    font-size: .95rem;
+}
 
 @media (max-width: 34.375rem) {
     .habit-title {

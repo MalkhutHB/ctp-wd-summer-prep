@@ -1,4 +1,5 @@
 const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+const months2 = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 const daysArray = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
 const daysArrayShort = ['Su', 'Mo', 'Tu', 'Wed', 'Th', 'Fr', 'Sa'];
 
@@ -10,6 +11,7 @@ let habitsParsed = JSON.parse(habitsJson || "{}", (key, value) => { // startDate
 })
 let habits = habitsParsed;
 
+const headerDate = document.querySelector(".date");
 const cards = document.querySelector(".cards");
 const addButton = document.querySelector(".add-habit");
 const cardTemplate = document.querySelector("#card-template");
@@ -55,7 +57,9 @@ sectionButtons.addEventListener("click", (e) => {
         renderHabits("completed");
     }
 });
+headerDate.textContent = `${months2[TODAY.getMonth()]} ${TODAY.getFullYear()}`;
 renderHabits("main");
+
 
 calendar.addEventListener("click", (e) => calendarInteract(e));
 
