@@ -78,7 +78,7 @@ html {
 
 /* Sort Later */
 header.top {
-    height: 15.625rem;
+    height: 8rem;
     width: fit-content;
     display: flex;
 }

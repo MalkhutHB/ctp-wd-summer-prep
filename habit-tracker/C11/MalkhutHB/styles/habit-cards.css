@@ -79,11 +79,7 @@
     border-width: 0.375rem;
 }
 
-.habit-icon.green:hover {
-    background: linear-gradient(45deg, #65B516 0%, #AFF200 100%, #689E42 100%);
-}
-
-.habit-card-main:hover .habit-icon {
+.habit-icon:hover {
     border-style: solid;
     border-color:  #5BAAC7;
 }

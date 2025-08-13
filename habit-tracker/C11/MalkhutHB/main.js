@@ -247,6 +247,7 @@ function renderHabits(section) {
         const habitTop = article.querySelector(".habit-card-main");
         const completedStatus = article.querySelector(".status"); 
         const completionIcon = article.querySelector(".habit-icon"); 
+        const streak = article.querySelector(".streak");
         
         const timeframe = habits[habitId].repeat;
         const completionDates = habits[habitId].completionDates;
@@ -271,10 +272,12 @@ function renderHabits(section) {
         const timeElement = article.querySelector(".time");
         titleElement.textContent = habits[habitId].name;
         timeElement.textContent = convert24to12(habits[habitId].reminderTime || "10:00");
+        streak.textContent = getStreakString(habitId);
 
         cards.appendChild(clone);
     }
 }
+
 
 function renderClear() {
     cards.replaceChildren();
@@ -360,6 +363,13 @@ function calcLastSuchDay(day) {
     lastSuch.setDate(lastSuch.getDate() - diff);
     lastSuch.setHours(0,0,0,0);
     return lastSuch;
+}
+
+function getStreakString(habitId) {
+    const completionDates = habits[habitId].completionDates;
+    const length = completionDates.length;
+    if (length) return `🌀${completionDates.length}`;
+    else return ``;
 }
 
 // function to calc streak. Basically did alr. But, need local storage for this to even matter. 
