@@ -1,6 +1,12 @@
+:root {
+    --main: #f1f1f1;
+    --old-main: #f9faf8;
+    --old: #f5f5f5;
+}
+
 body {
     font-family:Arial, Helvetica, sans-serif;
-    background-color: #f9faf8;
+    background-color: var(--main); /*#e7e7e6;*/
     color: #1f2937;
     /* margin: 40px 240px 40px; */
 }
@@ -72,10 +78,13 @@ html {
 
 /* Sort Later */
 header.top {
-    height: 15.625rem;
+    margin-top: 8rem;
+    height: 1rem;
     width: fit-content;
     display: flex;
+    align-items: center;
 }
+
 
 .title {
     align-self: flex-start;

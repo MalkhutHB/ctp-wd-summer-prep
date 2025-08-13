@@ -1,1 +1,0 @@
-# Live Site: https://malkhuthb.github.io/ctp-wd-summer-prep/
