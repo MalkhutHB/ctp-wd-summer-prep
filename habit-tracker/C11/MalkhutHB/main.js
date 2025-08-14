@@ -245,6 +245,7 @@ function newHabit() {
     
 
     article.addEventListener("click", (e) => habitInteract(e, article, habitId));
+    article.addEventListener("keyup", (e) => keydownToClick);
     article.addEventListener("dblclick", (e) => habitInteractDouble(e, article, habitId)); /*warning popup that can be disabled permanently?*/
     cards.appendChild(clone);
 }
@@ -279,7 +280,8 @@ function renderHabits(section) {
             if (!main) continue;
         }   
 
-        article.addEventListener("click", (e) => habitInteract(e, article, habitId))
+        article.addEventListener("click", (e) => habitInteract(e, article, habitId));
+        article.addEventListener("keydown", (e) => keydownToClick(e));
         article.addEventListener("dblclick", (e) => habitInteractDouble(e, article, habitId)); /*temporary?*/
         
         // from changehabit function
@@ -302,7 +304,6 @@ function getCompletionPercent(habitId) {
     if (repeat === "daily" || repeat === "none") {
         let daysElapsed = ((TODAY - startDate) / (1000 * 60 * 60 * 24)) + 1;
         const percentCompleted = (completions / daysElapsed) * 100;
-        console.log(`${habits[habitId].name}: ${Math.round(percentCompleted)}`);
         return Math.round(percentCompleted);
     }
     if (repeat === "weekly") {
@@ -315,7 +316,6 @@ function getCompletionPercent(habitId) {
             validDaysElapsed += suchDaysElapsed;
         }
         const percentCompleted = (completions / validDaysElapsed) * 100;
-        console.log(`${habits[habitId].name}: ${Math.round(percentCompleted)}`);
         return Math.round(percentCompleted);
     }
     throw new error("getCompletionPercent()'s habit parameter has invalid repeat value");
@@ -446,6 +446,12 @@ function getStreakString(habitId) {
     else return ``;
 }
 
+function keydownToClick(e) {
+    if (e.key === 'Enter') {
+        if (e.target.tagName === "BUTTON") return;
+        e.target.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+    }
+}
 
 
 
