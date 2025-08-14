@@ -73,30 +73,15 @@
 
 
 
-.completion-percent {
+.circular-progress {
     flex: 0 0 auto;
     height: 4.375rem;
     width: 4.375rem;
     border-radius: 100%;
-    background: linear-gradient(to bottom, #96BCFF 0%, #5E84FF 100%, #757575 100%);
     margin-left: 1.25rem;
     display: flex;
     justify-content: center;
     align-items: center;
-}
-
-.inner-circle {
-    height: 3.4375rem;
-    width: 3.4375rem;
-    box-sizing: border-box;
-    border-radius: 100%;
-    background-color: white;
-    font-size: 1rem;
-    font-weight: 700;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    user-select: none;
 }
 
 .habit-card-main .text {

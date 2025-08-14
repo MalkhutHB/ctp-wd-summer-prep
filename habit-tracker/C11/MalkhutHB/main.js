@@ -19,8 +19,9 @@ const sectionButtons = document.querySelector(".habits-list");
 const mainSection = document.querySelector(".section1");
 const completedSection = document.querySelector(".section2");
 const calendar = document.querySelector(".calendar");
-const TODAY = new Date();
 let calendarDay = new Date();
+calendarDay.setHours(0, 0, 0, 0);
+const TODAY = new Date(calendarDay);
 
 
 const hidden = document.querySelector("#detached-container");
@@ -248,10 +249,13 @@ function renderHabits(section) {
         const completedStatus = article.querySelector(".status"); 
         const completionIcon = article.querySelector(".habit-icon"); 
         const streak = article.querySelector(".streak");
+        const circularProgress = article.querySelector(".circular-progress");
+        const text = circularProgress.querySelector("text");
         
         const timeframe = habits[habitId].repeat;
         const completionDates = habits[habitId].completionDates;
         const repeatDays = habits[habitId].repeatDays;
+        const completionPercent = getCompletionPercent(habitId);
         const oneDayInMs = 1000 * 60 * 60 * 24;
         const today = new Date(calendarDay); /*marker for later*/ 
 
@@ -273,11 +277,38 @@ function renderHabits(section) {
         titleElement.textContent = habits[habitId].name;
         timeElement.textContent = convert24to12(habits[habitId].reminderTime || "10:00");
         streak.textContent = getStreakString(habitId);
-
+        circularProgress.style.setProperty('--progress', completionPercent);
+        text.textContent = `${completionPercent}%`;
         cards.appendChild(clone);
     }
 }
 
+function getCompletionPercent(habitId) {
+    const repeat = habits[habitId].repeat;
+    let startDate = new Date(habits[habitId].startDate);
+    startDate.setHours(0,0,0,0);
+    let completions = habits[habitId].completionDates.length;
+    if (repeat === "daily" || repeat === "none") {
+        let daysElapsed = ((TODAY - startDate) / (1000 * 60 * 60 * 24)) + 1;
+        const percentCompleted = (completions / daysElapsed) * 100;
+        console.log(`${habits[habitId].name}: ${Math.round(percentCompleted)}`);
+        return Math.round(percentCompleted);
+    }
+    if (repeat === "weekly") {
+        const repeatDays = habits[habitId].repeatDays;
+        let validDaysElapsed = 0;
+        for (const dayOfWeek of repeatDays) {
+            const lastSuch = calcLastSuchDay(dayOfWeek);
+            let daysElapsed = ((lastSuch - startDate) / (1000 * 60 * 60 * 24)) + 1; 
+            let suchDaysElapsed = Math.ceil(daysElapsed / 7);
+            validDaysElapsed += suchDaysElapsed;
+        }
+        const percentCompleted = (completions / validDaysElapsed) * 100;
+        console.log(`${habits[habitId].name}: ${Math.round(percentCompleted)}`);
+        return Math.round(percentCompleted);
+    }
+    throw new error("getCompletionPercent()'s habit parameter has invalid repeat value");
+}
 
 function renderClear() {
     cards.replaceChildren();

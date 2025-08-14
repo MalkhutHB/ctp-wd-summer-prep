@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="styles/calendar.css"/>
   <!-- <link rel="stylesheet" href="styles/mobile-breakpoint.css"> -->
   <link rel="stylesheet" href="styles/habit-cards.css"/>
+  <link rel="stylesheet" href="styles/progress.css"/>
   <script src="main.js" defer></script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Habit Tracker</title>
@@ -67,7 +68,7 @@
 
   
   <section class="cards">
-
+    
   </section>
 
 
@@ -88,11 +89,19 @@
           <span class="time">10:00 AM</span>
         </div>
         <div class="streak"></div>
-        <div class="completion-percent">
-          <div class="inner-circle">
-            100%
-          </div>
-        </div>
+        <svg width="70" height="70" viewBox="0 0 70 70" class="circular-progress" style="--progress: 75">
+          <defs>
+            <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#5E84FF"/>
+              <stop offset="100%" stop-color="#96BCFF"/>
+            </linearGradient>
+          </defs>
+          <circle class="bg" cx="35" cy="35"></circle>
+          <circle class="fg" cx="35" cy="35"></circle>
+          <text x="51%" y="52%">
+            75%
+          </text>
+        </svg>  
       </div>
     </article>
   </template>

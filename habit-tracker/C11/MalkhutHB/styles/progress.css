@@ -1,0 +1,36 @@
+circle {
+    --width: 70px;
+    --stroke-width: 8px;
+    --radius: calc((var(--width) - var(--stroke-width)) / 2);
+    --circumference: calc(2 * 3.14159265358 * var(--radius));
+    --filled: calc((var(--progress) / 100) * var(--circumference));
+}
+
+circle.bg {
+    r: var(--radius);
+    fill: none;
+    stroke: #cfcfcf;
+    stroke-width: var(--stroke-width);
+}
+
+circle.fg {
+    transform: rotate(-90deg);
+    transform-origin: center;
+    r: var(--radius);
+    fill: none;
+    stroke: url(#gradient);
+    stroke-width: var(--stroke-width);
+    stroke-dasharray: var(--filled) calc(var(--circumference) - var(--filled));
+    stroke-linecap: round;
+}
+
+.circular-progress text {
+    font-size: 1rem;
+    font-weight: 700px;
+    text-anchor: middle;
+    dominant-baseline: middle;
+    
+}
+
+/*stroke-dasharray: calc(var(--circumference) / 2) calc(var(--circumference) / 2);*/
+/*calc(var(--circumference) - var(--filled))
