@@ -85,6 +85,13 @@ header.top {
     align-items: center;
 }
 
+@media (max-width:550px) {
+    header.top {
+        margin-top: 8rem;
+        height: 3rem;
+    }
+}
+
 
 .title {
     align-self: flex-start;
