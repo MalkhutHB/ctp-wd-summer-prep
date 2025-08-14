@@ -91,3 +91,29 @@ function addHabit(habitName, categories, date) {
     
   </form>
 ```
+
+```css
+.habit-icon {
+    box-sizing: border-box;
+    height: 3.75rem;
+    width: 3.75rem;
+    border-radius: 100%;
+    margin-right: 1.25rem;
+    background-color: #dedddd;
+    background: linear-gradient(45deg, #A4A4A4 0%, #CBCBCB 100%, #757575 100%);
+    flex: 0 0 auto;
+}
+
+.habit-icon.green:hover {
+    background: linear-gradient(45deg, #65B516 0%, #AFF200 100%, #689E42 100%);
+}
+
+.habit-card-main:hover .habit-icon {
+    border-style: solid;
+    border-color:  #5BAAC7;
+}
+
+.habit-icon.completed {
+    background: linear-gradient(45deg, #5BAAC7 0%, #6ED2FF 100%, #ffffff 100%);
+} 
+```
