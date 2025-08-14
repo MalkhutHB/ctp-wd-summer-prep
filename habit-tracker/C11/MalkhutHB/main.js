@@ -165,6 +165,9 @@ function habitInteract(e, article, habitId) {
     const completedStatus = article.querySelector(".status"); 
     const completionIcon = article.querySelector(".habit-icon"); 
     const percentInner = article.querySelector(".inner-circle");
+    const streakElement = article.querySelector(".streak");
+    const circularProgress = article.querySelector(".circular-progress");
+    const progressText = circularProgress.querySelector("text");
 
     if (e.target == saveButton) {
         hidden.appendChild(extender);
@@ -173,20 +176,30 @@ function habitInteract(e, article, habitId) {
         hidden.appendChild(extender);
         article.remove();
         delete habits[habitId]; 
-        localStorage.setItem("habits", JSON.stringify(habits));
+        localUpdate();
     } else if (e.target == completionIcon) {
         if (completedStatus.textContent == "completed ☑️") {
             completedStatus.textContent = "unfinished";
             completionIcon.classList.remove("completed");
             habits[habitId].completionDates.splice(-1);
-            localStorage.setItem("habits", JSON.stringify(habits));
+            localUpdate();
+
+            streakElement.textContent = getStreakString(habitId);
+            const completionPercent = getCompletionPercent(habitId);
+            circularProgress.style.setProperty('--progress', completionPercent);
+            progressText.textContent = `${completionPercent}%`;
         } else {
             completedStatus.textContent = "completed ☑️"
             completionIcon.classList.add("completed");
             habits[habitId].completionDates.push(new Date());
-            localStorage.setItem("habits", JSON.stringify(habits));
+            localUpdate();
+
+            streakElement.textContent = getStreakString(habitId);
+            const completionPercent = getCompletionPercent(habitId);
+            circularProgress.style.setProperty('--progress', completionPercent);
+            progressText.textContent = `${completionPercent}%`;
         }
-    } else if (e.target == percentInner) { // don't want to expand because this element has a doubleclick action
+    } else if (circularProgress.contains(e.target)) { // don't want to expand because this element has a doubleclick action
     } else if (repeatOptions.contains(e.target)) {
         if (e.target.classList.contains("daily")) {
             habits[habitId].repeat = "daily";
@@ -211,14 +224,12 @@ function habitInteract(e, article, habitId) {
 }
 
 function habitInteractDouble(e, article, habitId) {
-    const habitTop = article.querySelector(".habit-card-main");
-    const completionIcon = article.querySelector(".habit-icon"); 
-    const percentInner = article.querySelector(".inner-circle");
-    if (e.target == percentInner) {
+    const circularProgress = article.querySelector(".circular-progress");
+    if (circularProgress.contains(e.target)) {
         hidden.appendChild(extender);
         article.remove();
         delete habits[habitId]; 
-        localStorage.setItem("habits", JSON.stringify(habits));
+        localUpdate();
     }
 }
 
@@ -250,7 +261,7 @@ function renderHabits(section) {
         const completionIcon = article.querySelector(".habit-icon"); 
         const streak = article.querySelector(".streak");
         const circularProgress = article.querySelector(".circular-progress");
-        const text = circularProgress.querySelector("text");
+        const progressText = circularProgress.querySelector("text");
         
         const timeframe = habits[habitId].repeat;
         const completionDates = habits[habitId].completionDates;
@@ -278,7 +289,7 @@ function renderHabits(section) {
         timeElement.textContent = convert24to12(habits[habitId].reminderTime || "10:00");
         streak.textContent = getStreakString(habitId);
         circularProgress.style.setProperty('--progress', completionPercent);
-        text.textContent = `${completionPercent}%`;
+        progressText.textContent = `${completionPercent}%`;
         cards.appendChild(clone);
     }
 }
@@ -330,7 +341,7 @@ function storeHabit(article) {
         repeat: "daily",
         repeatDays: [], //repeatDays: [daysArray[date.getDay()]] need this but wont rn cuz 
     };
-    localStorage.setItem("habits", JSON.stringify(habits));
+    localUpdate();
     return habitId;
 }
 
@@ -343,7 +354,7 @@ function changeHabit(article, repeat) {
     const habitId = article.dataset.habitId;
     habits[habitId].name = inputTitle.value || "New Habit";
     habits[habitId].reminderTime = inputTime.value;
-    localStorage.setItem("habits", JSON.stringify(habits));
+    localUpdate();
 }
 
 function convert24to12(time) {
@@ -357,11 +368,6 @@ function convert24to12(time) {
         hour12: true
     });
     return time12hr;
-}
-
-function completeHabit(habitId) { // unused
-    habits[habitId].completionDates.push(new Date());
-    localStorage.setItem("habits", JSON.stringify(habits));
 }
 
 function isSameTimeframe(repeat, repeatDays, date1, lastCompletedDate) { 
@@ -384,7 +390,7 @@ function isSameTimeframe(repeat, repeatDays, date1, lastCompletedDate) {
     }
 }
 
-function isSameTimeframe2(repeat, repeatDays, date1, lastCompletedDate) {
+function isSameTimeframe2(repeat, repeatDays, date1, lastCompletedDate) { // might be able to replace first one I need to check
     if (!lastCompletedDate) return false;
 
     date1.setHours(0, 0, 0, 0);
@@ -442,5 +448,4 @@ function getStreakString(habitId) {
 
 
 
-// today - habits[habitId].completionDates.at(-1) < oneDayInMs)
 

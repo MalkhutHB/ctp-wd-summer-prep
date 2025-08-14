@@ -115,5 +115,26 @@ function addHabit(habitName, categories, date) {
 
 .habit-icon.completed {
     background: linear-gradient(45deg, #5BAAC7 0%, #6ED2FF 100%, #ffffff 100%);
-} 
+}
+
+/* .calendar-day.test:hover {
+    color:#269cc7;
+    box-shadow: none;   
+    border-style: none;
+    
+    box-shadow: 
+    0px -4px 10px 8px #ffffffdc, 
+    0px 5px 10px 0px #a2a2a2;
+}
+
+.calendar-day.test {
+    color:#269cc7;
+    box-shadow: none;   
+    border-style: none;
+    
+    box-shadow:  -50px 5px 10px -40px #f9faf8bc,
+    50px 5px 10px -40px #f9faf8bc,
+    1px -4px 10px 8px #fffefe, 
+    -1px 5px 10px 0px #9c9c9c;
+} */
 ```

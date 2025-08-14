@@ -145,13 +145,6 @@ header.top {
 
 
 
-.dynamic-section { /* not sure what I was trying to solve with this anymore. Sumn about padding but confused now why I felt the behavior was weird*/
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    /* min-height: 550px; */ 
-}
-
 
 
 .add-habit {
