@@ -414,7 +414,9 @@ function isSameTimeframe2(repeat, repeatDays, date1, lastCompletedDate) { // mig
     date1.setHours(0, 0, 0, 0);
     lastCompletedDate.setHours(0, 0, 0, 0);
     if (repeat === "daily") {
-        return date1.getTime() === lastCompletedDate.getTime();
+        let diff = date1 - lastCompletedDate;
+        diff = diff / (1000 * 60 * 60 * 24);
+        return diff <= 1;
     }
     else if (repeat === "weekly") {
         for (const weekday of repeatDays) {
