@@ -202,21 +202,21 @@ function habitInteract(e, article, habitId) {
     } else if (circularProgress.contains(e.target)) { // don't want to expand because this element has a doubleclick action
     } else if (repeatOptions.contains(e.target)) {
         if (e.target.classList.contains("daily")) {
+            getCompletionPercent(habitId, "daily");
             habits[habitId].repeat = "daily";
-            getCompletionPercent(habitId);
             repeatSet("daily");
         } else if (e.target.classList.contains("weekly")) {
+            getCompletionPercent(habitId, "weekly");
             habits[habitId].repeat = "weekly";
-            getCompletionPercent(habitId);
             repeatSet("weekly");
         } else if (e.target.classList.contains("none")) {
+            getCompletionPercent(habitId, "none"); 
             habits[habitId].repeat = "none";
-            getCompletionPercent(habitId); // oops? not getCompletionPercent. I need to get valid days. Hmm. Turn it into a function. Clunky & easy way would be to just set it within the function every time it runs. Then call completionpercent here
             repeatSet("none");
         } else console.log("bugged repeat selector?");
         localUpdate();
     } else if (daysButtons.contains(e.target) && e.target != daysButtons) {
-        getCompletionPercent(habitId);
+        getCompletionPercent(habitId, e.target.id);
         setDays(e.target, habitId);
     } else if (habitTop.contains(e.target) && article.querySelector(".habit-card-extender")) {
         changeHabit(article);
@@ -303,32 +303,43 @@ function renderHabits(section) {
 }
 
 function oldCardCompletionFix(habitId) {
+    const habit = habits[habitId];
+    habit["repeatChanges"] = {changeDate:habit.startDate, lastCount: 1};
+    localUpdate();
+}
+
+function repeatChangesReset() {
+    for (const habitId of Object.keys(habits)) {
         const habit = habits[habitId];
         habit["repeatChanges"] = {changeDate:habit.startDate, lastCount: 1};
         localUpdate();
+    }
 }
 
-function getCompletionPercent(habitId) {
+function getCompletionPercent(habitId, repeatChange) {
     const repeat = habits[habitId].repeat;
     const lastDate = new Date(habits[habitId].repeatChanges.changeDate);
     const lastCount = habits[habitId].repeatChanges.lastCount;
     lastDate.setHours(0,0,0,0);
     let completions = habits[habitId].completionDates.length;
-    if (repeat === "daily" || repeat === "none") {
+    if (lastDate === TODAY) { // figure out if today is a due date & if that status changes now. Then decrement
+        
+    }
+    else if (repeat === "daily" || repeat === "none") {
         let daysElapsed = ((TODAY - lastDate) / (1000 * 60 * 60 * 24)); 
         const percentCompleted = (completions / (daysElapsed + lastCount)) * 100;     
         habits[habitId].repeatChanges = {changeDate: TODAY, lastCount: daysElapsed + lastCount};
         localUpdate(); // stores because this value shouldn't ever change between any two historical dates. For current date, I need to handle, but done today
         return Math.round(percentCompleted);
     }
-    if (repeat === "weekly") {
+    else if (repeat === "weekly") {
         const repeatDays = habits[habitId].repeatDays;
         let validDaysElapsed = lastCount; // changed from 0;
         for (const dayOfWeek of repeatDays) {
             const lastSuch = calcLastSuchDay(dayOfWeek);
             let daysElapsed = ((lastSuch - lastDate) / (1000 * 60 * 60 * 24)); 
-            let suchDaysElapsed = Math.ceil(daysElapsed / 7);
-            validDaysElapsed += suchDaysElapsed;
+            let suchDaysElapsed = Math.floor(daysElapsed / 7);
+            if (suchDaysElapsed > 0) validDaysElapsed += suchDaysElapsed;
         }
         const percentCompleted = (completions / validDaysElapsed) * 100;
         habits[habitId].repeatChanges = {changeDate: TODAY, lastCount: validDaysElapsed};
