@@ -472,7 +472,8 @@ function getStreakString(habitId) {
         }
     }
 
-    if (length > 1 && isSameTimeframe2(timeframe, repeatDays, completionDates.at(-1), completionDates.at(-2))) return `🌀${recentStreak}`;
+    if (length > 1 && !isSameTimeframe2(timeframe, repeatDays, TODAY, completionDates.at(-1))) return ``;
+    else if (length > 1 && isSameTimeframe2(timeframe, repeatDays, completionDates.at(-1), completionDates.at(-2))) return `🌀${recentStreak}`;
     else if (length >= 1 && isSameTimeframe2(timeframe, repeatDays, TODAY, completionDates.at(-1))) return `🌀${recentStreak}`;
     else return ``;
 }
