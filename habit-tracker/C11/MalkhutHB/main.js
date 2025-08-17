@@ -336,7 +336,7 @@ function getCompletionPercent(habitId, repeatChange) {
         const repeatDays = habits[habitId].repeatDays;
         let validDaysElapsed = lastCount; // changed from 0;
         for (const dayOfWeek of repeatDays) {
-            const lastSuch = calcLastSuchDay(dayOfWeek);
+            const lastSuch = calcLastSuchDay(dayOfWeek, TODAY);
             let daysElapsed = ((lastSuch - lastDate) / (1000 * 60 * 60 * 24)); 
             let suchDaysElapsed = Math.floor(daysElapsed / 7);
             if (suchDaysElapsed > 0) validDaysElapsed += suchDaysElapsed;
