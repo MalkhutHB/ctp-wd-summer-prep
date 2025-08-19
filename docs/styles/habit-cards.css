@@ -41,7 +41,7 @@
     border-radius: 0.3125rem;
 }
 
- .habit-icon {
+.habit-icon {
     box-sizing: border-box;
     height: 3.35rem;
     width: 3.35rem;
@@ -65,7 +65,9 @@
     border-color:#5BAAC7;
 }
 
-
+.habit-icon.disabled {
+    border-color: #d3d3d3;
+}
 
 
 
@@ -246,7 +248,6 @@
     display: flex;
     align-items: center;
     flex-direction: row;
-    width: 43.125rem;
     justify-content: space-between;
 }
 
@@ -254,7 +255,6 @@
     margin: 0.9375rem 0rem;
     height: 3.3125rem;
     width: 12.5rem;
-    padding-left: 0.625rem;
     background-color: #a4c6dd39;
     border-radius: 2.5rem;
     border-style: none;
