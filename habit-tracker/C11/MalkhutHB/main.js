@@ -352,7 +352,7 @@ function getCompletionPercent(habitId, repeatChange) {
             }
             validDaysElapsed += suchDaysElapsed;
         }
-        const percentCompleted = (completions / validDaysElapsed) * 100;
+        const percentCompleted = (completions / (validDaysElapsed || 1)) * 100; // patched new habit weekly behavior... not confident that this is a robust solution
         updateRepeatChanges(habitId, validDaysElapsed);
         localUpdate();
         return Math.round(percentCompleted);
@@ -420,6 +420,7 @@ function localUpdate() {
 
 function storeHabit(article) {
     date = new Date();
+    date.setDate(TODAY.getDate() - 1);
     const habitId = date.toISOString();
     article.dataset.habitId = habitId;
     habits[habitId] = { 
@@ -429,7 +430,7 @@ function storeHabit(article) {
         reminderTime: "10:00",
         repeat: "daily",
         repeatDays: [], //repeatDays: [daysArray[date.getDay()]] maybe
-        repeatChanges: {changeDate: date, lastCount: 1}, // date repeat was changed, due dates up to that point
+        repeatChanges: {changeDate: date, lastCount: 0}, // date repeat was changed, due dates up to that point
     };
     localUpdate();
     return habitId;
@@ -555,4 +556,4 @@ function keydownToClick(e) {
 // later:
 // properly change completion status when repeat settings are updated
 //
-// daily completion percent is bugged lol
+// streak behavior weird when you change to repeat = none. 
