@@ -4,7 +4,7 @@ const daysArray = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'frid
 const daysArrayShort = ['Su', 'Mo', 'Tu', 'Wed', 'Th', 'Fr', 'Sa'];
 
 const habitsJson = localStorage.getItem("habits");
-let habitsParsed = JSON.parse(habitsJson || "{}", (key, value) => { // startDate unusued but will be useful for completion statistics later
+let habitsParsed = JSON.parse(habitsJson || "{}", (key, value) => { 
     if (key == "startDate") return new Date(value);
     if (key == "completionDates") return value.map(date => new Date(date));
     return value;
@@ -15,6 +15,7 @@ const headerDate = document.querySelector(".date");
 const cards = document.querySelector(".cards");
 const addButton = document.querySelector(".add-habit");
 const cardTemplate = document.querySelector("#card-template");
+const templateCheckbox = cardTemplate.content.querySelector(".habit-icon");
 const sectionButtons = document.querySelector(".habits-list");
 const mainSection = document.querySelector(".section1");
 const completedSection = document.querySelector(".section2");
@@ -70,12 +71,16 @@ function calendarInteract(e) {
     if (e.target.tagName === "DIV") {
         e.target.parentElement.classList.add("clicked");
         const offset = e.target.parentElement.dataset.timeOffset;
-        calendarDay.setDate(TODAY.getDate() + Number(offset));
+        calendarDay.setDate(TODAY.getDate() + Number(offset));             // redundant?
+        if (offset == 0) templateCheckbox.classList.remove("disabled");
+        else templateCheckbox.classList.add("disabled");
         renderHabits(selected);
     } else {
         e.target.classList.add("clicked");
         const offset = e.target.dataset.timeOffset;
-        calendarDay.setDate(TODAY.getDate() + Number(offset));
+        calendarDay.setDate(TODAY.getDate() + Number(offset));             // redundant?
+        if (offset == 0) templateCheckbox.classList.remove("disabled");
+        else templateCheckbox.classList.add("disabled");
         renderHabits(selected);
     }
 }
@@ -95,7 +100,7 @@ renderCalendar();
 
 function extenderFill(habitId) {
     inputTitle.value = habits[habitId].name;
-    inputTime.value = habits[habitId].reminderTime; //
+    inputTime.value = habits[habitId].reminderTime; 
     repeatSet(habits[habitId].repeat);
     renderDays(habits[habitId].repeatDays);
 }
@@ -178,7 +183,10 @@ function habitInteract(e, article, habitId) {
         delete habits[habitId]; 
         localUpdate();
     } else if (e.target == completionIcon) {
-        if (completedStatus.textContent == "completed ☑️") {
+        if (calDayElement.dataset.timeOffset != 0) {
+            // do nothing, disabled button
+        }
+        else if (completedStatus.textContent == "completed ☑️") {
             completedStatus.textContent = "unfinished";
             completionIcon.classList.remove("completed");
             habits[habitId].completionDates.splice(-1);
@@ -201,7 +209,6 @@ function habitInteract(e, article, habitId) {
         }
     } else if (circularProgress.contains(e.target)) { // don't want to expand because this element has a doubleclick action
     } else if (repeatOptions.contains(e.target)) {
-        // if todayIsADueDate, true. then below comment
         if (e.target.classList.contains("daily")) {
             getCompletionPercent(habitId, "daily");
             habits[habitId].repeat = "daily";
@@ -215,7 +222,6 @@ function habitInteract(e, article, habitId) {
             habits[habitId].repeat = "none";
             repeatSet("none");
         } else console.log("bugged repeat selector?");
-        // if todayIsADueDate status changed, then toggle a completion, only if it's not already correct?  
         localUpdate();
     } else if (daysButtons.contains(e.target) && e.target != daysButtons) {
         getCompletionPercent(habitId, e.target.id);
@@ -252,7 +258,7 @@ function newHabit() {
 
     article.addEventListener("click", (e) => habitInteract(e, article, habitId));
     article.addEventListener("keyup", (e) => keydownToClick);
-    article.addEventListener("dblclick", (e) => habitInteractDouble(e, article, habitId)); /*warning popup that can be disabled permanently?*/
+    article.addEventListener("dblclick", (e) => habitInteractDouble(e, article, habitId));
     cards.appendChild(clone);
 }
 
@@ -290,7 +296,7 @@ function renderHabits(section) {
 
         article.addEventListener("click", (e) => habitInteract(e, article, habitId));
         article.addEventListener("keydown", (e) => keydownToClick(e));
-        article.addEventListener("dblclick", (e) => habitInteractDouble(e, article, habitId)); /*temporary?*/
+        article.addEventListener("dblclick", (e) => habitInteractDouble(e, article, habitId)); 
         
         // from changehabit function
         const titleElement = article.querySelector(".habit-title");
@@ -328,9 +334,8 @@ function getCompletionPercent(habitId, repeatChange) {
     if (repeat === "daily" || repeat === "none") {
         let daysElapsed = ((TODAY - lastRepeatChange) / (1000 * 60 * 60 * 24)); 
         const percentCompleted = (completions / (daysElapsed + lastCount)) * 100;     
-        // habits[habitId].repeatChanges = {changeDate: TODAY, lastCount: daysElapsed + lastCount};
         updateRepeatChanges(habitId, (daysElapsed + lastCount));
-        localUpdate(); // stores because this value shouldn't ever change between any two historical dates. For current date, I need to handle, but done today
+        localUpdate();
         return Math.round(percentCompleted);
     }
     else if (repeat === "weekly") {
@@ -348,7 +353,6 @@ function getCompletionPercent(habitId, repeatChange) {
             validDaysElapsed += suchDaysElapsed;
         }
         const percentCompleted = (completions / validDaysElapsed) * 100;
-        // habits[habitId].repeatChanges = {changeDate: TODAY, lastCount: validDaysElapsed};
         updateRepeatChanges(habitId, validDaysElapsed);
         localUpdate();
         return Math.round(percentCompleted);
@@ -366,7 +370,6 @@ function updateCompletionPercent(article, habitId) {
 }
 
 function updateRepeatChanges(habitId, currentCount) {
-    // figure if today is valid, then reduce currentCount by 1 (or 0) accordingly before storing, using previous day.
     const WEEKDAY = daysArray[TODAY.getDay()];
     let yesterday = new Date();
     yesterday.setDate(TODAY.getDate() - 1); 
@@ -425,7 +428,7 @@ function storeHabit(article) {
         completionDates: [],
         reminderTime: "10:00",
         repeat: "daily",
-        repeatDays: [], //repeatDays: [daysArray[date.getDay()]] need this but wont rn cuz 
+        repeatDays: [], //repeatDays: [daysArray[date.getDay()]] maybe
         repeatChanges: {changeDate: date, lastCount: 1}, // date repeat was changed, due dates up to that point
     };
     localUpdate();
@@ -523,7 +526,7 @@ function getStreakString(habitId) {
     const timeframe = habits[habitId].repeat;    
     const repeatDays = habits[habitId].repeatDays;
 
-    let recentStreak = 1; // if not sametimeframe outside of loop, dont return recent return 0
+    let recentStreak = 1; 
 
     for (let i=length-1; i>0; i--) {
         if (isSameTimeframe2(timeframe, repeatDays, completionDates[i], completionDates[i-1])) {
@@ -548,6 +551,6 @@ function keydownToClick(e) {
 
 
 
-// disable complete button when on other calendar days
-//
+
+// later:
 // properly change completion status when repeat settings are updated
