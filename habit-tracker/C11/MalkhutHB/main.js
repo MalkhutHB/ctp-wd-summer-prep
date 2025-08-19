@@ -164,10 +164,10 @@ function habitInteract(e, article, habitId) {
     const habitTop = article.querySelector(".habit-card-main");
     const completedStatus = article.querySelector(".status"); 
     const completionIcon = article.querySelector(".habit-icon"); 
-    const percentInner = article.querySelector(".inner-circle");
     const streakElement = article.querySelector(".streak");
     const circularProgress = article.querySelector(".circular-progress");
     const progressText = circularProgress.querySelector("text");
+    const calDayElement = document.querySelector(".clicked");
 
     if (e.target == saveButton) {
         hidden.appendChild(extender);
@@ -201,6 +201,7 @@ function habitInteract(e, article, habitId) {
         }
     } else if (circularProgress.contains(e.target)) { // don't want to expand because this element has a doubleclick action
     } else if (repeatOptions.contains(e.target)) {
+        // if todayIsADueDate, true. then below comment
         if (e.target.classList.contains("daily")) {
             getCompletionPercent(habitId, "daily");
             habits[habitId].repeat = "daily";
@@ -214,6 +215,7 @@ function habitInteract(e, article, habitId) {
             habits[habitId].repeat = "none";
             repeatSet("none");
         } else console.log("bugged repeat selector?");
+        // if todayIsADueDate status changed, then toggle a completion, only if it's not already correct?  
         localUpdate();
     } else if (daysButtons.contains(e.target) && e.target != daysButtons) {
         getCompletionPercent(habitId, e.target.id);
@@ -318,17 +320,16 @@ function repeatChangesReset() {
 
 function getCompletionPercent(habitId, repeatChange) {
     const repeat = habits[habitId].repeat;
-    const lastDate = new Date(habits[habitId].repeatChanges.changeDate);
+    const lastRepeatChange = new Date(habits[habitId].repeatChanges.changeDate);
     const lastCount = habits[habitId].repeatChanges.lastCount;
-    lastDate.setHours(0,0,0,0);
+    lastRepeatChange.setHours(0,0,0,0);
     let completions = habits[habitId].completionDates.length;
-    if (lastDate === TODAY) { // figure out if today is a due date & if that status changes now. Then decrement
-        
-    }
-    else if (repeat === "daily" || repeat === "none") {
-        let daysElapsed = ((TODAY - lastDate) / (1000 * 60 * 60 * 24)); 
+    
+    if (repeat === "daily" || repeat === "none") {
+        let daysElapsed = ((TODAY - lastRepeatChange) / (1000 * 60 * 60 * 24)); 
         const percentCompleted = (completions / (daysElapsed + lastCount)) * 100;     
-        habits[habitId].repeatChanges = {changeDate: TODAY, lastCount: daysElapsed + lastCount};
+        // habits[habitId].repeatChanges = {changeDate: TODAY, lastCount: daysElapsed + lastCount};
+        updateRepeatChanges(habitId, (daysElapsed + lastCount));
         localUpdate(); // stores because this value shouldn't ever change between any two historical dates. For current date, I need to handle, but done today
         return Math.round(percentCompleted);
     }
@@ -336,17 +337,74 @@ function getCompletionPercent(habitId, repeatChange) {
         const repeatDays = habits[habitId].repeatDays;
         let validDaysElapsed = lastCount; // changed from 0;
         for (const dayOfWeek of repeatDays) {
-            const lastSuch = calcLastSuchDay(dayOfWeek, TODAY);
-            let daysElapsed = ((lastSuch - lastDate) / (1000 * 60 * 60 * 24)); 
-            let suchDaysElapsed = Math.floor(daysElapsed / 7);
-            if (suchDaysElapsed > 0) validDaysElapsed += suchDaysElapsed;
+            let lastSuch = calcLastSuchDay(dayOfWeek, TODAY);
+            let daysElapsed = ((lastSuch - lastRepeatChange) / (1000 * 60 * 60 * 24)); 
+            let suchDaysElapsed = 0;
+            while (lastSuch > lastRepeatChange) {
+                suchDaysElapsed++;
+                lastSuch.setDate(lastSuch.getDate() - 1);
+                lastSuch = calcLastSuchDay(dayOfWeek, new Date(lastSuch));
+            }
+            validDaysElapsed += suchDaysElapsed;
         }
         const percentCompleted = (completions / validDaysElapsed) * 100;
-        habits[habitId].repeatChanges = {changeDate: TODAY, lastCount: validDaysElapsed};
+        // habits[habitId].repeatChanges = {changeDate: TODAY, lastCount: validDaysElapsed};
+        updateRepeatChanges(habitId, validDaysElapsed);
         localUpdate();
         return Math.round(percentCompleted);
     }
     throw new error("getCompletionPercent()'s habit parameter has invalid repeat value");
+}
+
+function updateCompletionPercent(article, habitId) {
+    habitId = article.dataset.habitId;
+    const circularProgress = article.querySelector(".circular-progress");
+    const progressText = circularProgress.querySelector("text");
+    const completionPercent = getCompletionPercent(habitId);
+    circularProgress.style.setProperty('--progress', completionPercent);
+    progressText.textContent = `${completionPercent}%`;
+}
+
+function updateRepeatChanges(habitId, currentCount) {
+    // figure if today is valid, then reduce currentCount by 1 (or 0) accordingly before storing, using previous day.
+    const WEEKDAY = daysArray[TODAY.getDay()];
+    let yesterday = new Date();
+    yesterday.setDate(TODAY.getDate() - 1); 
+    if (habits[habitId].repeatDays.includes(WEEKDAY)) currentCount--;
+    habits[habitId].repeatChanges = {changeDate: yesterday, lastCount: currentCount};
+}
+
+function updateStreak(article, habitId) {
+    habitId = article.dataset.habitId;
+    const streak = article.querySelector(".streak");
+    streak.textContent = getStreakString(habitId);
+}
+
+function toggleComplete(article, habitId) {                          // unused
+    const completedStatus = article.querySelector(".status"); 
+    const completionIcon = article.querySelector(".habit-icon");
+    habitId = article.dataset.habitId;
+    if (completedStatus.textContent == "completed ☑️") {
+        completedStatus.textContent = "unfinished";
+        completionIcon.classList.remove("completed");
+        habits[habitId].completionDates.splice(-1);
+        localUpdate();
+
+        streakElement.textContent = getStreakString(habitId);
+        const completionPercent = getCompletionPercent(habitId);
+        circularProgress.style.setProperty('--progress', completionPercent);
+        progressText.textContent = `${completionPercent}%`;
+    } else {
+        completedStatus.textContent = "completed ☑️"
+        completionIcon.classList.add("completed");
+        habits[habitId].completionDates.push(new Date());
+        localUpdate();
+
+        streakElement.textContent = getStreakString(habitId);
+        const completionPercent = getCompletionPercent(habitId);
+        circularProgress.style.setProperty('--progress', completionPercent);
+        progressText.textContent = `${completionPercent}%`;
+    }
 }
 
 function renderClear() {
@@ -384,6 +442,9 @@ function changeHabit(article, repeat) {
     habits[habitId].name = inputTitle.value || "New Habit";
     habits[habitId].reminderTime = inputTime.value;
     localUpdate();
+
+    updateCompletionPercent(article);
+    updateStreak(article);
 }
 
 function convert24to12(time) {
@@ -487,11 +548,6 @@ function keydownToClick(e) {
 
 
 
-// time selector element popping out
-// fix completionPercent math (sigh)
-
-// for completionPercent, have dates to store when repeat or repeatDays was changed. And corresponding historical value. 
-// now instead of calculating from startdate in your getCompletionPercent() function, you calc from the last date and add it's num. Ig we just use a key value pair. Array of two
-
-
-// for tomorrow: comment on line 321
+// disable complete button when on other calendar days
+//
+// properly change completion status when repeat settings are updated
