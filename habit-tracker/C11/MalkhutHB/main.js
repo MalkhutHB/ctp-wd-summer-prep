@@ -373,7 +373,7 @@ function updateRepeatChanges(habitId, currentCount) {
     const WEEKDAY = daysArray[TODAY.getDay()];
     let yesterday = new Date();
     yesterday.setDate(TODAY.getDate() - 1); 
-    if (habits[habitId].repeatDays.includes(WEEKDAY)) currentCount--;
+    if (habits[habitId].repeatDays.includes(WEEKDAY) || habits[habitId].repeat != "weekly") currentCount--;
     habits[habitId].repeatChanges = {changeDate: yesterday, lastCount: currentCount};
 }
 
@@ -554,3 +554,5 @@ function keydownToClick(e) {
 
 // later:
 // properly change completion status when repeat settings are updated
+//
+// daily completion percent is bugged lol
